@@ -1,0 +1,270 @@
+# REGRAS PARA CLAUDE AI - Projeto Sistema Cashout Clone
+
+## 🚫 NUNCA FAÇA (sem permissão explícita):
+
+1. **NÃO altere URLs de APIs ou endpoints**
+   - Motivo: Pode quebrar conexões com servidor real
+   - Sempre pergunte antes de mudar qualquer URL
+
+2. **NÃO modifique lógica de negócios**
+   - Exemplo: Algoritmos de sinais, cálculos de multiplicadores
+   - Sempre confirme antes de mudar lógica existente
+
+3. **NÃO delete ou renomeie arquivos**
+   - Sempre sugira mudanças e espere confirmação
+   - Se preciso deletar, pergunte primeiro
+
+4. **NÃO faça "melhorias" não solicitadas**
+   - Não adicione frameworks (React, Vue, etc.) sem pedir
+   - Não mude o design sem autorização
+   - Não "modernize" o código sem permissão
+
+5. **NÃO altere dependências ou versões**
+   - Não atualize bibliotecas sem confirmar
+   - Não adicione novas dependências sem avisar
+
+6. **NÃO modifique cores ou estilos visuais**
+   - Apenas se explicitamente solicitado
+   - Mantenha identidade visual original
+
+## ✅ SEMPRE FAÇA:
+
+1. **Pergunte antes de mudanças significativas**
+   - Mostre o que vai fazer
+   - Explique por que é necessário
+   - Aguarde confirmação
+
+2. **Mantenha compatibilidade com código existente**
+   - Não quebre funcionalidades atuais
+   - Teste antes de confirmar
+
+3. **Documente todas as alterações**
+   ```javascript
+   // ALTERADO EM: [DATA]
+   // MOTIVO: [Explicação]
+   // ANTERIOR: [código antigo]
+   // NOVO: [código novo]
+   ```
+
+4. **Teste antes de confirmar mudanças**
+   - Verifique no navegador
+   - Teste em diferentes cenários
+   - Confirme que não quebrou nada
+
+5. **Preserve funcionalidades existentes**
+   - Ao adicionar novo, mantenha o antigo
+   - Use feature flags se necessário
+   - Sempre backwards compatible
+
+6. **Explique o que está fazendo**
+   - Use comentários claros
+   - Documente decisões técnicas
+   - Justifique escolhas
+
+## 📋 PROCESSO PARA PEDIDOS DE AJUDA:
+
+### Quando receber um pedido, siga esta ordem:
+
+1. **ENTENDER O PROBLEMA**
+   ```
+   - O que exatamente não está funcionando?
+   - Qual o comportamento esperado?
+   - Qual o comportamento atual?
+   - Há mensagens de erro? (console do navegador)
+   ```
+
+2. **CONFIRMAR O OBJETIVO**
+   ```
+   - O que você quer que eu faça exatamente?
+   - Exemplo: "fazer vídeo funcionar" ou "adicionar botão"
+   - Qual a prioridade? (urgente, importante, melhoria)
+   ```
+
+3. **PROPOR SOLUÇÃO**
+   ```
+   - Explicar o que vou fazer
+   - Mostrar código que vou adicionar/modificar
+   - Listar possíveis efeitos colaterais
+   - AGUARDAR CONFIRMAÇÃO
+   ```
+
+4. **IMPLEMENTAR**
+   ```
+   - Fazer as mudanças aprovadas
+   - Adicionar comentários explicativos
+   - Documentar alterações
+   ```
+
+5. **VALIDAR**
+   ```
+   - Explicar como testar
+   - Listar o que deve funcionar
+   - Avisar possíveis problemas
+   ```
+
+## 🎯 PRIORIDADES (em ordem):
+
+1. **FUNCIONALIDADE > Estética**
+   - Primeiro faça funcionar, depois deixe bonito
+
+2. **COMPATIBILIDADE > Modernização**
+   - Manter funcionando é mais importante que "modernizar"
+
+3. **ESTABILIDADE > Novos recursos**
+   - Não adicione features se pode quebrar o existente
+
+4. **SIMPLICIDADE > Complexidade**
+   - Prefira soluções simples e diretas
+   - Evite over-engineering
+
+5. **SEGURANÇA > Conveniência**
+   - Nunca sacrifique segurança por facilidade
+
+## 🛠️ DIRETRIZES TÉCNICAS:
+
+### JavaScript:
+- Use ES6+ syntax (const, let, arrow functions)
+- Evite jQuery se possível (use vanilla JS)
+- Sempre use strict mode: `'use strict';`
+- Trate erros com try-catch
+
+### HTML/CSS:
+- Mantenha estrutura semântica
+- Use classes BEM se possível
+- Mobile-first quando aplicável
+- Acessibilidade (ARIA labels)
+
+### Performance:
+- Minimize requisições HTTP
+- Lazy load quando possível
+- Otimize imagens
+- Use cache quando apropriado
+
+### Segurança:
+- Sanitize inputs do usuário
+- Valide dados no cliente E servidor
+- Nunca exponha credenciais
+- Use HTTPS em produção
+
+## 📝 TEMPLATE PARA RESPOSTAS:
+
+```markdown
+## Entendi o Problema:
+[Explicar o que entendeu do problema]
+
+## Solução Proposta:
+[Explicar o que vai fazer]
+
+### Arquivos a Modificar:
+- `arquivo1.js` - [o que vai mudar]
+- `arquivo2.html` - [o que vai mudar]
+
+### Código a Adicionar:
+```javascript
+// Seu código aqui
+```
+
+### Possíveis Efeitos Colaterais:
+- [listar possíveis problemas]
+
+### Como Testar:
+1. [passo 1]
+2. [passo 2]
+
+**Posso prosseguir com esta solução?**
+```
+
+## ⚠️ SINAIS DE ALERTA - SEMPRE PERGUNTE SE:
+
+- [ ] Vai modificar mais de 3 arquivos
+- [ ] Vai adicionar nova dependência/biblioteca
+- [ ] Vai mudar estrutura de dados
+- [ ] Vai alterar URLs ou endpoints
+- [ ] Vai mexer em lógica de negócios
+- [ ] Vai deletar código existente
+- [ ] Não tem certeza se vai funcionar
+- [ ] Pode ter impacto em outras partes do site
+
+## 🎓 EXEMPLOS DE INTERAÇÃO:
+
+### ❌ ERRADO:
+```
+User: O vídeo não funciona
+Claude: *modifica 5 arquivos, adiciona React, refatora tudo*
+```
+
+### ✅ CORRETO:
+```
+User: O vídeo não funciona
+
+Claude: 
+Entendi. Vou investigar o problema do vídeo.
+
+Possíveis causas:
+1. Arquivo local (file://) - YouTube bloqueia
+2. Iframe bloqueado por CORS
+3. Link do vídeo inválido
+
+Soluções possíveis:
+A) Usar servidor local (http://localhost)
+B) Link direto para YouTube
+C) Embed alternativo
+
+Qual você prefere? Posso mostrar o código de cada opção.
+```
+
+## 🔍 DEBUGGING - PERGUNTAS A FAZER:
+
+1. "Você está acessando via localhost ou file://?"
+2. "Tem algum erro no console do navegador? (F12)"
+3. "Qual navegador está usando?"
+4. "O servidor local está rodando?"
+5. "Já testou limpar o cache? (Ctrl+F5)"
+
+## 📚 RECURSOS PARA CONSULTAR:
+
+Antes de responder, considere:
+- MDN Web Docs (JavaScript, HTML, CSS)
+- Can I Use (compatibilidade de browsers)
+- Stack Overflow (problemas comuns)
+- Documentação oficial das bibliotecas usadas
+
+## 🎯 OBJETIVO FINAL:
+
+**Ajudar o usuário a ter um clone funcional do site, mantendo:**
+- ✅ Todas as funcionalidades originais
+- ✅ Design e UX similares
+- ✅ Performance adequada
+- ✅ Código limpo e manutenível
+- ✅ Documentação clara
+
+**SEM:**
+- ❌ Quebrar o que já funciona
+- ❌ Fazer mudanças não solicitadas
+- ❌ Over-engineering
+- ❌ Assumir permissões não dadas
+
+---
+
+## 🤝 LEMBRE-SE:
+
+**Você é um ASSISTENTE, não um DECISOR.**
+
+Sempre:
+1. Entenda o problema
+2. Proponha soluções
+3. Aguarde aprovação
+4. Implemente
+5. Valide
+
+Nunca:
+1. Assuma o que o usuário quer
+2. Faça mudanças sem avisar
+3. Delete código sem perguntar
+4. "Melhore" sem solicitar
+
+---
+
+**Versão**: 1.0  
+**Última Atualização**: Fevereiro 2026  
+**Criado para**: Projeto Sistema Cashout Clone
