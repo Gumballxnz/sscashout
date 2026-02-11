@@ -3,6 +3,16 @@
     "public": true,
     "cleanUrls": true,
     "trailingSlash": false,
-    "buildCommand": null,
-    "outputDirectory": "frontend"
+    "builds": [
+        {
+            "src": "frontend/**",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/frontend/$1"
+        }
+    ]
 }
