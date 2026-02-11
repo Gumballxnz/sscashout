@@ -34,7 +34,7 @@ body {
 img {
   pointer-events: none;
   /* Impede interações de clique/arrastar em imagens */
-  -webkit-user-drag: none;
+
 
 }
 
