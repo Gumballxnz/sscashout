@@ -1,10 +1,7 @@
-/.agent
-/.claude_rules
-/.clinerules
-/GUIA_ANTIGRAVITY.md
-/GUIA_CLONAGEM_SITE.md
-/notificacoes-local.js
-/pagina do sistema
-/README.md
-/sinais-mock-sscashout.js
-/sinais-mock.js
+keys/
+*.pem
+.env
+backend/node_modules/
+tools/node_modules/
+*.log
+.DS_Store

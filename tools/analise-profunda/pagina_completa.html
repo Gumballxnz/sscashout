@@ -1,0 +1,380 @@
+<html lang="pt"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sistema de Cashout</title>
+
+  <meta name="theme-color" content="#0B0F14">
+  <link rel="manifest" href="/manifest.json?v=4">
+
+  <link rel="stylesheet" href="/styles.css?v=4">
+  <link rel="stylesheet" href="/inapp-warn.css?v=1">
+  <link rel="stylesheet" href="/curso-promo.css?v=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+
+  <!-- seu app realtime/push -->
+  <script src="https://connect.facebook.net/signals/config/336965031445587?v=2.9.261&amp;r=stable&amp;domain=app.sscashout.online&amp;hme=20296eac3bb30511174edf43e83f1c9e303df926d3c833283a366d6f5480f82a&amp;ex_m=95%2C158%2C135%2C20%2C67%2C68%2C128%2C63%2C42%2C129%2C72%2C62%2C10%2C142%2C81%2C15%2C94%2C123%2C116%2C70%2C73%2C122%2C139%2C103%2C144%2C7%2C3%2C4%2C6%2C5%2C2%2C82%2C92%2C145%2C226%2C170%2C56%2C228%2C229%2C49%2C185%2C27%2C69%2C234%2C233%2C173%2C29%2C55%2C9%2C58%2C88%2C89%2C90%2C96%2C119%2C28%2C26%2C121%2C118%2C117%2C136%2C71%2C138%2C137%2C44%2C54%2C112%2C14%2C141%2C39%2C215%2C217%2C180%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C77%2C83%2C87%2C101%2C127%2C130%2C40%2C102%2C21%2C19%2C108%2C64%2C32%2C132%2C131%2C133%2C124%2C22%2C31%2C53%2C100%2C140%2C65%2C16%2C134%2C105%2C76%2C61%2C30%2C195%2C165%2C287%2C213%2C156%2C198%2C191%2C166%2C98%2C120%2C75%2C110%2C48%2C41%2C43%2C104%2C109%2C115%2C52%2C59%2C114%2C47%2C50%2C46%2C91%2C143%2C0%2C113%2C13%2C111%2C11%2C1%2C51%2C84%2C57%2C60%2C107%2C80%2C79%2C146%2C147%2C85%2C86%2C8%2C93%2C45%2C125%2C78%2C74%2C66%2C106%2C97%2C37%2C126%2C33%2C99%2C12%2C148" async=""></script><script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script><script src="/app.js?v=6" defer=""></script>
+  <script src="/inapp-warn.js?v=1" defer=""></script>
+  <script src="/protect.min.js"></script>
+  <script src="/curso-promo.js?v=1" defer=""></script>
+
+
+  <!-- UX helpers (toasts/ações) -->
+  <script src="/ux.js?v=1" defer=""></script>
+  <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '336965031445587');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=336965031445587&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+</head>
+
+<body>
+
+  <div id="toast-stack" class="toast-stack"></div>
+
+<!-- In-app Browser Warning -->
+<div id="inAppWarn" class="inapp-warn" style="display:none">
+  <button class="inapp-close" id="inAppClose" aria-label="Fechar">×</button>
+
+  <div class="inapp-row">
+    <div class="inapp-icon">⚠️</div>
+
+    <div class="inapp-txt">
+      <p class="inapp-title">Estás no navegador do Facebook/Instagram</p>
+      <p class="inapp-msg" id="inAppMsg">
+        Para as notificações funcionarem bem, abre este link no Chrome/Safari.
+      </p>
+
+      <div class="inapp-actions">
+        <button class="inapp-primary" id="inAppCopy">Copiar link</button>
+        <button class="inapp-ghost" id="inAppHow">Como abrir no navegador</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="inAppGuide" class="inapp-guide" role="dialog" aria-modal="true" style="display:none">
+  <div class="inapp-card">
+    <p class="inapp-h">Como abrir no navegador</p>
+    <p class="inapp-p" id="inAppStepsText"></p>
+    <ol class="inapp-steps" id="inAppSteps"></ol>
+
+    <div class="inapp-footer">
+      <button class="inapp-ghost" id="inAppGuideClose">Fechar</button>
+    </div>
+  </div>
+</div>
+<!-- /In-app Browser Warning -->
+
+
+
+  
+
+  <!-- Safe area iOS -->
+  <div class="safe-area">
+
+    <!-- Top App Bar -->
+    <header class="appbar">
+      <div class="brand">
+        <img class="logo" src="/icon-192.png" alt="Logo">
+        <div class="titles">
+          <h1>Sistema Cashout</h1>
+          <span class="subtitle" data-subtitle="connection">Aguarde entrada</span>
+        </div>
+      </div>
+      <button class="chip chip-live bg-green-600" aria-live="polite" data-status="realtime"><span id="onlineCount">· 9 online</span>
+      </button>
+
+    </header>
+
+    <!-- Conteúdo -->
+    <main class="content">
+
+
+
+      <div id="pushGate" class="push-gate" aria-hidden="true">
+        <div class="push-gate__card">
+          <div class="push-gate__icon">🔔</div>
+          <h3 class="push-gate__title">Ativa os Alertas</h3>
+          <p class="push-gate__text">
+            Sem notificações vais perder sinais. Ativa agora para receber <b>SINAIS</b> mesmo com o ecrã fechado.
+          </p>
+
+          <div class="push-gate__bullets">
+            <div class="b"> Avisa quando tem sinal </div>
+            <div class="b"> Ajuda a ficar atento</div>
+          </div>
+
+          <button id="pushGateEnable" class="push-gate__btn push-gate__btn--primary">
+            Ativar Notificações
+          </button>
+
+          <button id="pushGateSkip" class="push-gate__btn push-gate__btn--ghost">Agora não</button>
+        </div>
+      </div>
+
+
+      <div class="card mini">
+              <h3 class="velas-title">
+                <span id="velas-status" class="analisando">
+                  <span class="ping"></span>
+                  <span>Analisando velas</span>
+                  <span class="dots"><i></i><i></i><i></i></span>
+                </span>
+              </h3>
+              
+              <div class="liveviz">
+                <div class="live-vela" aria-label="Vela atual">
+                  <span id="live-dot" class="live-dot wait"></span>
+                  <span id="live-valor" class="live-valor">1.29x</span>
+                  <span class="live-label">agora</span>
+                </div>
+                <svg id="sparkline" class="sparkline draw" viewBox="0 0 100 30" preserveAspectRatio="none" aria-label="Tendência" style="--draw-ms: 520ms;">
+        <path class="area" d="M 0.00 3.71 Q 0.00 3.71 1.72 5.64 Q 3.45 7.58 5.17 9.51 Q 6.90 11.44 8.62 13.38 Q 10.34 15.31 12.07 17.25 Q 13.79 19.18 15.52 21.11 Q 17.24 23.05 18.97 24.55 Q 20.69 26.04 22.41 25.80 Q 24.14 25.55 25.86 25.30 Q 27.59 25.05 29.31 24.81 Q 31.03 24.56 32.76 24.31 Q 34.48 24.06 36.21 23.82 Q 37.93 23.57 39.66 23.32 Q 41.38 23.08 43.10 22.83 Q 44.83 22.59 46.55 22.35 Q 48.28 22.11 50.00 21.86 Q 51.72 21.62 53.45 21.38 Q 55.17 21.14 56.90 20.89 Q 58.62 20.65 60.34 20.86 Q 62.07 21.06 63.79 21.56 Q 65.52 22.07 67.24 22.57 Q 68.97 23.08 70.69 23.58 Q 72.41 24.08 74.14 24.59 Q 75.86 25.09 77.59 25.60 Q 79.31 26.10 81.03 26.20 Q 82.76 26.29 84.48 26.28 Q 86.21 26.28 87.93 26.27 Q 89.66 26.26 91.38 26.25 Q 93.10 26.25 94.83 26.24 Q 96.55 26.23 98.28 26.23 T 100.00 26.22 L 100 30 L 0 30 Z"></path>
+        <path class="line" d="M 0.00 3.71 Q 0.00 3.71 1.72 5.64 Q 3.45 7.58 5.17 9.51 Q 6.90 11.44 8.62 13.38 Q 10.34 15.31 12.07 17.25 Q 13.79 19.18 15.52 21.11 Q 17.24 23.05 18.97 24.55 Q 20.69 26.04 22.41 25.80 Q 24.14 25.55 25.86 25.30 Q 27.59 25.05 29.31 24.81 Q 31.03 24.56 32.76 24.31 Q 34.48 24.06 36.21 23.82 Q 37.93 23.57 39.66 23.32 Q 41.38 23.08 43.10 22.83 Q 44.83 22.59 46.55 22.35 Q 48.28 22.11 50.00 21.86 Q 51.72 21.62 53.45 21.38 Q 55.17 21.14 56.90 20.89 Q 58.62 20.65 60.34 20.86 Q 62.07 21.06 63.79 21.56 Q 65.52 22.07 67.24 22.57 Q 68.97 23.08 70.69 23.58 Q 72.41 24.08 74.14 24.59 Q 75.86 25.09 77.59 25.60 Q 79.31 26.10 81.03 26.20 Q 82.76 26.29 84.48 26.28 Q 86.21 26.28 87.93 26.27 Q 89.66 26.26 91.38 26.25 Q 93.10 26.25 94.83 26.24 Q 96.55 26.23 98.28 26.23 T 100.00 26.22" style="stroke-dasharray: 117.518; stroke-dashoffset: 117.518; --len: 117.5178451538086;"></path>
+      </svg>
+                <div id="terminalTape" class="terminal-tape" aria-label="Terminal Tape"></div>
+
+              </div>
+
+              <ul id="velas" class="velas"><li class="vela-pill" style="background:#2b0f0f;color:#ff5c5c">1.29x</li><li class="vela-pill" style="background:#2b0f0f;color:#ff5c5c">1.13x</li><li class="vela-pill" style="background:#0f2b1a;color:#36d27a">12.45x</li><li class="vela-pill" style="background:#0f2b1a;color:#36d27a">7.00x</li><li class="vela-pill" style="background:#2b0f0f;color:#ff5c5c">1.44x</li></ul>
+            </div>
+
+
+      <!-- Card Entrada -->
+
+      <div id="banner-estrategia" style="display: none; background: rgb(26, 31, 38); border-left: 4px solid rgb(46, 204, 113); padding: 12px; border-radius: 8px; margin-bottom: 10px; color: rgb(255, 255, 255); font-size: 14px; font-weight: 600;">
+        <span id="texto-meta">Entrada Confirmada</span>
+      </div>
+
+      <div id="signal-slot" class="signal-slot">
+      <div id="signal-pop" class="signal-pop wait pulse signal-enter">
+        <div class="top">
+          <div class="title"><span class="dot"></span> ENTRADA CONFIRMADA</div>
+          <div class="badge">APOSTA AGORA</div>
+        </div>
+
+        <div class="grid">
+          <div class="cell"><span>Depois de</span><strong>1.29x</strong></div>
+          <div class="cell"><span>Cashout</span><strong>2.00x</strong></div>
+          <div class="cell"><span>Tentar</span><strong>3 Vezes</strong></div>
+        </div>
+
+        
+      <div class="signal-note">
+        Tenta o sinal 3 vezes. Se uma das vezes chegar no <b>2.00x</b>, consideramos <b>GREEN</b>.
+        E <b>LOSS</b> se em todas as 3 tentativas sair um cashout abaixo de <b>2.00x</b>.
+      </div>
+    
+      </div>
+    </div>
+      
+
+      <div class="card highlight">
+        <div class="card-head">
+          <h2>Estatísticas de Hoje</h2>
+          <div class="pill green" id="stat-percent-text">82.9% DE ACERTOS</div>
+        </div>
+
+        <div class="entry-grid">
+          <div class="entry-metric">
+            <div class="label">VITÓRIAS</div>
+            <div class="value" style="color: var(--live);" id="count-wins">145</div>
+          </div>
+          <div class="entry-metric">
+            <div class="label">DERROTAS</div>
+            <div class="value" style="color: var(--danger);" id="count-loss">30</div>
+          </div>
+          <div class="entry-metric">
+            <div class="label">TOTAL</div>
+            <div class="value" id="count-total">175</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 15px; background: var(--stroke); height: 6px; border-radius: 10px; overflow: hidden;">
+          <div id="stat-percent-bar" style="width: 82.9%; height: 100%; background: var(--primary); transition: width 0.8s;"></div>
+        </div>
+        
+        <div class="actions">
+          <button class="btn btn-primary" id="openGame">Apostar</button>
+          <button class="btn btn-warn" data-action="ativar-push" id="pushbtn">Ativar Alerta</button>
+        </div>
+
+      </div>
+
+
+      <!-- Card Histórico -->
+      <section class="card">
+        <div class="card-head">
+          <h2>Histórico</h2>
+          <div class="filters">
+            <button class="chip" data-filter="all" aria-pressed="true">Tudo</button>
+            <button class="chip" data-filter="green">Green</button>
+            <button class="chip" data-filter="loss">Loss</button>
+          </div>
+        </div>
+
+        <ul class="history" data-table="historico"><li data-status="green">
+        <div class="time">15:27:17</div>
+        <div class="meta">
+          <span class="chip">Apos: 7.06x</span>
+          <span class="chip">Cash: 2.00x</span>
+          <span class="chip">Vela: 54.92x</span>
+        </div>
+        <div class="badge pill green">GREEN</div>
+      </li>
+          <!-- app.js vai inserir <li> -->
+        </ul>
+
+        <div class="hint">Puxe para baixo para atualizar</div>
+      </section>
+
+    </main>
+
+
+
+<section class="tutorial-wrap" id="tutorial">
+  <div class="cta-push" role="status" aria-live="polite">
+    <div class="cta-icon"></div>
+    <div class="cta-text">
+      <strong>Ative os alertas!</strong>
+      <span>Para receber os sinais mesmo com o app fechado.</span>
+    </div>
+    <button class="btn btn-warn cta-btn" id="cta-ativar-push">Ativar notificações</button>
+  </div>
+
+    <div class="video-frame">
+  <iframe id="tutorialVideo" class="tutorial-video" src="https://www.youtube.com/embed/uSICVLdrmBU?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Tutorial Sistema" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+  </iframe>
+</div>
+
+  <p class="tutorial-caption">
+    Assista o video acima para <strong>aprender a usar o SISTEMA</strong> do jeito certo e conseguir lucrar no aviator.
+  </p>
+
+
+  <!-- ========== BANNER DO CURSO - SISTEMA MILIONÁRIO ========== -->
+  <!--
+
+  <section class="card">
+  <div class="curso-banner">
+    <div class="curso-banner-content">
+      <div class="curso-banner-badge">Curso Exclusivo</div>
+      
+      <h3 class="curso-banner-title">
+        🚀 <span>Sistema Milionário</span>
+      </h3>
+      
+      <p class="curso-banner-desc">
+        Domine o Aviator com estratégias avançadas e comece a lucrar de verdade!
+      </p>
+      
+      <div class="curso-banner-footer">
+        <div class="curso-price">
+          <span class="curso-price-label">Por apenas</span>
+          <span class="curso-price-value">497 <small>MT</small></span>
+        </div>
+        
+        <a href="https://wa.me/258866480859?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20curso%20Sistema%20Milion%C3%A1rio" 
+           target="_blank" 
+           class="curso-banner-cta">
+          Quero o Curso
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+-->
+  <!-- ========== /BANNER DO CURSO ========== -->
+
+</section>
+
+    <!-- Toasts -->
+    <div id="toast" role="status" aria-live="polite" class="">Acesso Desbloqueado!</div>
+
+  
+  <!-- Tutorial Visual (Overlay único) -->
+  <div id="tutorial-overlay" class="tutorial-overlay hidden" aria-hidden="true">
+    <div class="tutorial-card" role="dialog" aria-modal="true" aria-label="Tutorial">
+      <div class="tutorial-head">
+        <h3 id="tutorial-title">Tutorial</h3>
+      </div>
+
+      <div class="tutorial-body">
+        <p id="tutorial-text" class="tutorial-text"></p>
+
+        <div id="tutorial-media" class="tutorial-media hidden">
+          <img id="tutorial-img" alt="Tutorial">
+        </div>
+      </div>
+
+      <div class="tutorial-actions">
+        <button id="tutorial-next" class="tutorial-btn">Próximo</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  </div>
+
+
+
+
+      <div id="cursoPopupOverlay" class="curso-popup-overlay">
+        <div class="curso-popup">
+          <button class="curso-popup-close" id="cursoPopupClose" aria-label="Fechar">×</button>
+          
+          <div class="curso-popup-header">
+            <div class="curso-popup-emoji">🚀</div>
+            <h3>Sistema Milionário</h3>
+            <p>O curso que vai mudar seus resultados</p>
+          </div>
+          
+          <div class="curso-popup-body">
+            <p class="curso-popup-question">
+              Quer <strong>dominar o Aviator</strong> e lucrar de verdade?
+            </p>
+            
+            <div class="curso-popup-features">
+              <div class="curso-popup-feature">
+                <div class="curso-popup-feature-icon">🎯</div>
+                <div class="curso-popup-feature-text">
+                  <strong>Como Pegar Rosa</strong>
+                  Técnicas exclusivas para acertar
+                </div>
+              </div>
+            
+            <div class="curso-popup-price-box">
+              <div class="curso-popup-price-label">Investimento único</div>
+              <div class="curso-popup-price">497 <small>MT</small></div>
+            </div>
+            
+            <a href="https://wa.me/258866480859?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20curso%20Sistema%20Milion%C3%A1rio" target="_blank" class="curso-popup-cta" id="cursoPopupCTA">
+              Quero o Curso Agora
+            </a>
+            
+            <button class="curso-popup-skip" id="cursoPopupSkip">
+              Agora não, obrigado
+            </button>
+          </div>
+        </div>
+      </div>
+    </div></body></html>

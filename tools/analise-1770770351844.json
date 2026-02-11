@@ -1,0 +1,788 @@
+{
+  "requisicoes": [
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770250629",
+      "method": "GET",
+      "resourceType": "eventsource",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream"
+      },
+      "timestamp": "2026-02-11T00:37:34.118Z"
+    },
+    {
+      "url": "https://app.sscashout.online/api/velas",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:34.222Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json",
+        "data": {
+          "ok": true,
+          "valores": [
+            4.36,
+            1.24,
+            1.67,
+            2.58,
+            1,
+            1.66
+          ]
+        }
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/online",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:34.228Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json",
+        "data": {
+          "ok": true,
+          "online": 6
+        }
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/velas",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:34.232Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json",
+        "data": {
+          "ok": true,
+          "valores": [
+            4.36,
+            1.24,
+            1.67,
+            2.58,
+            1,
+            1.66
+          ]
+        }
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/stats",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:34.236Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json",
+        "data": {
+          "wins": 23,
+          "loss": 6,
+          "total": 29,
+          "percentage": 79.3
+        }
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/velas",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:34.240Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json",
+        "data": {
+          "ok": true,
+          "valores": [
+            4.36,
+            1.24,
+            1.67,
+            2.58,
+            1,
+            1.66
+          ]
+        }
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/ultimo-historico",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:41.488Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json",
+        "data": {
+          "ok": true,
+          "data": {
+            "ts": "2026-02-11T00:36:35.421397+00:00",
+            "status": "green",
+            "vela_final": 2.58,
+            "apos_de": 5.54,
+            "cashout": 2
+          }
+        }
+      }
+    },
+    {
+      "url": "https://www.facebook.com/privacy_sandbox/topics/registration/?id=336965031445587",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*",
+        "sec-browsing-topics": "();p=P0000000000000000000000000000000"
+      },
+      "timestamp": "2026-02-11T00:37:47.731Z"
+    },
+    {
+      "url": "https://web.facebook.com/privacy_sandbox/topics/registration/?id=336965031445587&_rdc=1&_rdr",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "referer": "https://app.sscashout.online/",
+        "accept": "*/*",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-browsing-topics": "();p=P0000000000000000000000000000000"
+      },
+      "timestamp": "2026-02-11T00:37:48.765Z"
+    },
+    {
+      "url": "https://googleads.g.doubleclick.net/pagead/id",
+      "method": "GET",
+      "resourceType": "xhr",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.youtube.com/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:52.235Z"
+    },
+    {
+      "url": "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+      "method": "POST",
+      "resourceType": "xhr",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "x-youtube-client-name": "56",
+        "x-youtube-ad-signals": "dt=1770770270884&flash=0&frm=2&u_tz=120&u_his=2&u_h=768&u_w=1360&u_ah=768&u_aw=1360&u_cd=32&bc=31&bih=-12245933&biw=-12245933&brdim=-32000%2C-32000%2C-32000%2C-32000%2C1360%2C0%2C160%2C28%2C834%2C469&vis=2&wgl=true&ca_type=image",
+        "x-youtube-client-version": "1.20260206.07.00",
+        "content-type": "application/json",
+        "x-youtube-page-label": "youtube.embeds.web_20260206_07_RC00",
+        "x-youtube-page-cl": "866554157",
+        "x-youtube-utc-offset": "120",
+        "referer": "https://www.youtube.com/embed/uSICVLdrmBU?rel=0&modestbranding=1&playsinline=1",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "x-youtube-device": "cbr=Chrome&cbrver=145.0.0.0&ceng=WebKit&cengver=537.36&cos=Windows&cosver=10.0&cplatform=DESKTOP",
+        "x-goog-visitor-id": "Cgtodl9hQzZ0REhFWSjKnq_MBjIKCgJNWhIEGgAgIWLfAgrcAjE1LllUPVdrUEZnWVFyN3FBeWhiWHY4TE9HdHUxR2YtVmwxZWRlVXFuZkdnU1lEeTUtX0E0a2lQT2hScy10azdiLUNBQlVoMW5CV0VFaHdSNTBuSTJtVFhlZ1hsXzNLY2ZHUm9idkRxa2p2bmNLZm9UaVYtTTBWeU1TNU83cnQwakxpbVdtZ2czYlhseUM5WkRWYXZTVzNsR0lZakNqcGR0MFQ3Z1M3WHktWFFHRHcxUlc1WExKRUF3VU81R0tUN0tOSmtSRUxGRkNCNHBsS0lQQVVEVXJDeTZHa20zT1B3VWtnc3lTQW5PZE1pd0c3Z0RqNEhERy1oM214LXFZQk01ZmtlVkdjX1lCUW9naEhZQmo2cmpXOGRJRXhmNHJoNENCaFpYeUNqcGRLYlhCSUxQX3JTVkR4eUFvN1lHR19fdDZQWHlKTlBvR3c2U2V3MG81d21pbHc5TVlfUQ%3D%3D",
+        "x-goog-request-time": "1770770276496",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "x-youtube-time-zone": "Europe/Chisinau",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:37:56.914Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json; charset=UTF-8",
+        "data": {
+          "responseContext": {}
+        }
+      }
+    },
+    {
+      "url": "https://googleads.g.doubleclick.net/pagead/id?slf_rd=1",
+      "method": "GET",
+      "resourceType": "xhr",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "referer": "https://www.youtube.com/",
+        "accept": "*/*",
+        "accept-language": "pt-BR,pt;q=0.9"
+      },
+      "timestamp": "2026-02-11T00:37:56.936Z"
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770280554",
+      "method": "GET",
+      "resourceType": "eventsource",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      },
+      "timestamp": "2026-02-11T00:38:01.322Z"
+    },
+    {
+      "url": "https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa/GenerateIT",
+      "method": "POST",
+      "resourceType": "xhr",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://www.youtube.com/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "x-goog-api-key": "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "content-type": "application/json+protobuf",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:38:01.376Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json+protobuf; charset=UTF-8",
+        "data": [
+          "NVmC3xN5DHQN7CnJi4OvD1YCSCsXem4tQMGHplw86lIqiup2suYHbg30Kv2HiDTLYadoLUM3GFr+t5fea/xBKPM=",
+          43200,
+          100
+        ]
+      }
+    },
+    {
+      "url": "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+      "method": "POST",
+      "resourceType": "xhr",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "x-youtube-client-name": "56",
+        "x-youtube-ad-signals": "dt=1770770270884&flash=0&frm=2&u_tz=120&u_his=2&u_h=768&u_w=1360&u_ah=768&u_aw=1360&u_cd=32&bc=31&bih=-12245933&biw=-12245933&brdim=10%2C10%2C10%2C10%2C1360%2C0%2C1050%2C748%2C834%2C469&vis=1&wgl=true&ca_type=image",
+        "x-goog-event-time": "1770770285025",
+        "x-youtube-client-version": "1.20260206.07.00",
+        "content-type": "application/json",
+        "x-youtube-page-label": "youtube.embeds.web_20260206_07_RC00",
+        "x-youtube-page-cl": "866554157",
+        "x-youtube-utc-offset": "120",
+        "referer": "https://www.youtube.com/embed/uSICVLdrmBU?rel=0&modestbranding=1&playsinline=1",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "x-youtube-device": "cbr=Chrome&cbrver=145.0.0.0&ceng=WebKit&cengver=537.36&cos=Windows&cosver=10.0&cplatform=DESKTOP",
+        "x-goog-visitor-id": "Cgtodl9hQzZ0REhFWSjKnq_MBjIKCgJNWhIEGgAgIWLfAgrcAjE1LllUPVdrUEZnWVFyN3FBeWhiWHY4TE9HdHUxR2YtVmwxZWRlVXFuZkdnU1lEeTUtX0E0a2lQT2hScy10azdiLUNBQlVoMW5CV0VFaHdSNTBuSTJtVFhlZ1hsXzNLY2ZHUm9idkRxa2p2bmNLZm9UaVYtTTBWeU1TNU83cnQwakxpbVdtZ2czYlhseUM5WkRWYXZTVzNsR0lZakNqcGR0MFQ3Z1M3WHktWFFHRHcxUlc1WExKRUF3VU81R0tUN0tOSmtSRUxGRkNCNHBsS0lQQVVEVXJDeTZHa20zT1B3VWtnc3lTQW5PZE1pd0c3Z0RqNEhERy1oM214LXFZQk01ZmtlVkdjX1lCUW9naEhZQmo2cmpXOGRJRXhmNHJoNENCaFpYeUNqcGRLYlhCSUxQX3JTVkR4eUFvN1lHR19fdDZQWHlKTlBvR3c2U2V3MG81d21pbHc5TVlfUQ%3D%3D",
+        "x-goog-request-time": "1770770285027",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "x-youtube-time-zone": "Europe/Chisinau",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:38:06.368Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json; charset=UTF-8",
+        "data": {
+          "responseContext": {}
+        }
+      }
+    },
+    {
+      "url": "https://script.google.com/macros/s/AKfycbxo3o5cSyDBRGv0eV1dg2VbUtkYlLGeKyS-H_DlSMoR5IA2PDZ1K_xdT1XfBXdSQCbtwQ/exec",
+      "method": "POST",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:38:12.980Z"
+    },
+    {
+      "url": "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgpeIKp3hJbbt7Wz8UuQspETCEqEB-LfQ80rgjkl-4XQRRhQx6jQYtVnrFjC0HNJlw8LqIOjndGYsvCKozZ9Rhj7hODg08kRkQ0J8AQBgfnGwBs3IavImo4zUrrkJ6ejcOjj0xMqLYLgm4Bx5hczVYf5-NbePkLNZlVlZkxAzFRSKGCDiUj7-OX76JecYZl6fBd6O7WOdubaUYgeWJTv2g_1jO7c9a8Lz3BxLBgxzYkGqa6YkGNyg9mhWQFH20dff4zF6dM7wYEdhXV0rPjTpsoKeCnci1L6eR11MCs&lib=MrN3cdYAf8X6TDVK7csEmJfd2yvzh65Wg",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "referer": "https://app.sscashout.online/",
+        "accept": "*/*",
+        "accept-language": "pt-BR,pt;q=0.9"
+      },
+      "timestamp": "2026-02-11T00:38:16.927Z"
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770305654",
+      "method": "GET",
+      "resourceType": "eventsource",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      },
+      "timestamp": "2026-02-11T00:38:25.675Z"
+    },
+    {
+      "url": "https://app.sscashout.online/vapidPublicKey.txt",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      },
+      "timestamp": "2026-02-11T00:38:28.182Z"
+    },
+    {
+      "url": "https://app.sscashout.online/vapidPublicKey.txt",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      },
+      "timestamp": "2026-02-11T00:38:35.603Z"
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770320301",
+      "method": "GET",
+      "resourceType": "eventsource",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      },
+      "timestamp": "2026-02-11T00:38:40.673Z"
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770321305",
+      "method": "GET",
+      "resourceType": "eventsource",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      },
+      "timestamp": "2026-02-11T00:38:41.404Z"
+    },
+    {
+      "url": "https://app.sscashout.online/vapidPublicKey.txt",
+      "method": "GET",
+      "resourceType": "fetch",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      },
+      "timestamp": "2026-02-11T00:38:48.631Z"
+    },
+    {
+      "url": "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+      "method": "POST",
+      "resourceType": "xhr",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "x-youtube-client-name": "56",
+        "x-youtube-ad-signals": "dt=1770770270884&flash=0&frm=2&u_tz=120&u_his=2&u_h=768&u_w=1360&u_ah=768&u_aw=1360&u_cd=32&bc=31&bih=-12245933&biw=-12245933&brdim=0%2C0%2C0%2C0%2C1360%2C0%2C1360%2C768%2C834%2C469&vis=1&wgl=true&ca_type=image",
+        "x-goog-event-time": "1770770330318",
+        "x-youtube-client-version": "1.20260206.07.00",
+        "content-type": "application/json",
+        "x-youtube-page-label": "youtube.embeds.web_20260206_07_RC00",
+        "x-youtube-page-cl": "866554157",
+        "x-youtube-utc-offset": "120",
+        "referer": "https://www.youtube.com/embed/uSICVLdrmBU?rel=0&modestbranding=1&playsinline=1",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "x-youtube-device": "cbr=Chrome&cbrver=145.0.0.0&ceng=WebKit&cengver=537.36&cos=Windows&cosver=10.0&cplatform=DESKTOP",
+        "x-goog-visitor-id": "Cgtodl9hQzZ0REhFWSjKnq_MBjIKCgJNWhIEGgAgIWLfAgrcAjE1LllUPVdrUEZnWVFyN3FBeWhiWHY4TE9HdHUxR2YtVmwxZWRlVXFuZkdnU1lEeTUtX0E0a2lQT2hScy10azdiLUNBQlVoMW5CV0VFaHdSNTBuSTJtVFhlZ1hsXzNLY2ZHUm9idkRxa2p2bmNLZm9UaVYtTTBWeU1TNU83cnQwakxpbVdtZ2czYlhseUM5WkRWYXZTVzNsR0lZakNqcGR0MFQ3Z1M3WHktWFFHRHcxUlc1WExKRUF3VU81R0tUN0tOSmtSRUxGRkNCNHBsS0lQQVVEVXJDeTZHa20zT1B3VWtnc3lTQW5PZE1pd0c3Z0RqNEhERy1oM214LXFZQk01ZmtlVkdjX1lCUW9naEhZQmo2cmpXOGRJRXhmNHJoNENCaFpYeUNqcGRLYlhCSUxQX3JTVkR4eUFvN1lHR19fdDZQWHlKTlBvR3c2U2V3MG81d21pbHc5TVlfUQ%3D%3D",
+        "x-goog-request-time": "1770770330318",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "x-youtube-time-zone": "Europe/Chisinau",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:38:50.329Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json; charset=UTF-8",
+        "data": {
+          "responseContext": {}
+        }
+      }
+    },
+    {
+      "url": "https://www.youtube.com/youtubei/v1/log_event?alt=json",
+      "method": "POST",
+      "resourceType": "xhr",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "x-youtube-client-name": "56",
+        "x-youtube-ad-signals": "dt=1770770270884&flash=0&frm=2&u_tz=120&u_his=2&u_h=768&u_w=1360&u_ah=768&u_aw=1360&u_cd=32&bc=31&bih=-12245933&biw=-12245933&brdim=0%2C0%2C0%2C0%2C1360%2C0%2C1360%2C768%2C834%2C469&vis=1&wgl=true&ca_type=image",
+        "x-goog-event-time": "1770770334160",
+        "x-youtube-client-version": "1.20260206.07.00",
+        "content-type": "application/json",
+        "x-youtube-page-label": "youtube.embeds.web_20260206_07_RC00",
+        "x-youtube-page-cl": "866554157",
+        "x-youtube-utc-offset": "120",
+        "referer": "https://www.youtube.com/embed/uSICVLdrmBU?rel=0&modestbranding=1&playsinline=1",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "x-youtube-device": "cbr=Chrome&cbrver=145.0.0.0&ceng=WebKit&cengver=537.36&cos=Windows&cosver=10.0&cplatform=DESKTOP",
+        "x-goog-visitor-id": "Cgtodl9hQzZ0REhFWSjKnq_MBjIKCgJNWhIEGgAgIWLfAgrcAjE1LllUPVdrUEZnWVFyN3FBeWhiWHY4TE9HdHUxR2YtVmwxZWRlVXFuZkdnU1lEeTUtX0E0a2lQT2hScy10azdiLUNBQlVoMW5CV0VFaHdSNTBuSTJtVFhlZ1hsXzNLY2ZHUm9idkRxa2p2bmNLZm9UaVYtTTBWeU1TNU83cnQwakxpbVdtZ2czYlhseUM5WkRWYXZTVzNsR0lZakNqcGR0MFQ3Z1M3WHktWFFHRHcxUlc1WExKRUF3VU81R0tUN0tOSmtSRUxGRkNCNHBsS0lQQVVEVXJDeTZHa20zT1B3VWtnc3lTQW5PZE1pd0c3Z0RqNEhERy1oM214LXFZQk01ZmtlVkdjX1lCUW9naEhZQmo2cmpXOGRJRXhmNHJoNENCaFpYeUNqcGRLYlhCSUxQX3JTVkR4eUFvN1lHR19fdDZQWHlKTlBvR3c2U2V3MG81d21pbHc5TVlfUQ%3D%3D",
+        "x-goog-request-time": "1770770334160",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "x-youtube-time-zone": "Europe/Chisinau",
+        "accept": "*/*"
+      },
+      "timestamp": "2026-02-11T00:38:54.209Z",
+      "response": {
+        "status": 200,
+        "contentType": "application/json; charset=UTF-8",
+        "data": {
+          "responseContext": {}
+        }
+      }
+    }
+  ],
+  "websockets": [],
+  "apis": [
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770250629",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/velas",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/online",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/velas",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/stats",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/velas",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/ultimo-historico",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770280554",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770305654",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770320301",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      }
+    },
+    {
+      "url": "https://app.sscashout.online/api/stream?cid=5d29c7b6-c944-4e36-aa1c-934eab25ddec&v=1770770321305",
+      "method": "GET",
+      "headers": {
+        "sec-ch-ua-platform": "\"Windows\"",
+        "cache-control": "no-cache",
+        "referer": "https://app.sscashout.online/",
+        "accept-language": "pt-BR,pt;q=0.9",
+        "sec-ch-ua": "\"Chromium\";v=\"145\", \"Not:A-Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+        "accept": "text/event-stream",
+        "cookie": "_fbp=fb.1.1770770264025.653122302686653872"
+      }
+    },
+    {
+      "url": "/api/stats",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/velas",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/vapidPublicKey.txt",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/subscribe",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/online",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/vapidPublicKey.txt",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/subscribe",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/vapidPublicKey.txt",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/subscribe",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/velas",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/velas",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/ultimo-historico",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    },
+    {
+      "url": "/api/stream?cid=",
+      "source": "https://app.sscashout.online/app.js?v=6",
+      "method": "GET (inferido)"
+    }
+  ],
+  "headers": {},
+  "cookies": "_fbp=fb.1.1770770264025.653122302686653872",
+  "localStorage": {
+    "lastExternalReferrer": "empty",
+    "lastExternalReferrerTime": "1770770263894",
+    "lead_cadastrado": "true",
+    "topicsLastReferenceTime": "1770770315493",
+    "cid": "5d29c7b6-c944-4e36-aa1c-934eab25ddec"
+  },
+  "sessionStorage": {},
+  "scriptsSources": [
+    "https://connect.facebook.net/signals/config/336965031445587?v=2.9.261&r=stable&domain=app.sscashout.online&hme=20296eac3bb30511174edf43e83f1c9e303df926d3c833283a366d6f5480f82a&ex_m=95%2C158%2C135%2C20%2C67%2C68%2C128%2C63%2C42%2C129%2C72%2C62%2C10%2C142%2C81%2C15%2C94%2C123%2C116%2C70%2C73%2C122%2C139%2C103%2C144%2C7%2C3%2C4%2C6%2C5%2C2%2C82%2C92%2C145%2C226%2C170%2C56%2C228%2C229%2C49%2C185%2C27%2C69%2C234%2C233%2C173%2C29%2C55%2C9%2C58%2C88%2C89%2C90%2C96%2C119%2C28%2C26%2C121%2C118%2C117%2C136%2C71%2C138%2C137%2C44%2C54%2C112%2C14%2C141%2C39%2C215%2C217%2C180%2C23%2C24%2C25%2C17%2C18%2C38%2C34%2C36%2C35%2C77%2C83%2C87%2C101%2C127%2C130%2C40%2C102%2C21%2C19%2C108%2C64%2C32%2C132%2C131%2C133%2C124%2C22%2C31%2C53%2C100%2C140%2C65%2C16%2C134%2C105%2C76%2C61%2C30%2C195%2C165%2C287%2C213%2C156%2C198%2C191%2C166%2C98%2C120%2C75%2C110%2C48%2C41%2C43%2C104%2C109%2C115%2C52%2C59%2C114%2C47%2C50%2C46%2C91%2C143%2C0%2C113%2C13%2C111%2C11%2C1%2C51%2C84%2C57%2C60%2C107%2C80%2C79%2C146%2C147%2C85%2C86%2C8%2C93%2C45%2C125%2C78%2C74%2C66%2C106%2C97%2C37%2C126%2C33%2C99%2C12%2C148",
+    "https://connect.facebook.net/en_US/fbevents.js",
+    "https://app.sscashout.online/app.js?v=6",
+    "https://app.sscashout.online/inapp-warn.js?v=1",
+    "https://app.sscashout.online/protect.min.js",
+    "https://app.sscashout.online/curso-promo.js?v=1",
+    "https://app.sscashout.online/ux.js?v=1"
+  ],
+  "timestamp": "2026-02-11T00:36:43.186Z"
+}

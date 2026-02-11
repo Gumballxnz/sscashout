@@ -1,0 +1,15 @@
+{
+  "lastCheck": "2026-02-11T15:29:53.730Z",
+  "hashes": {
+    "index.html": "f5774557cbc0dfa3b6246836e9ffe95a",
+    "app.js": "e87499845610e98e6e782f52802256a0",
+    "ux.js": "dd453f737b56e3c3d947d7ccd7e5e3c5",
+    "styles.css": "3f8c27069f1295a852f2b59406ca497d",
+    "curso-promo.js": "ecd437c0f05b3467a4d1561ed638272e",
+    "inapp-warn.js": "73329fe2536f15c2002f9ff1b34db169",
+    "protect.min.js": "f91728b0beb67abe8bed221254dc38c3",
+    "sw.js": "7cfda9fa6b816f7d189bdf2eb36a02df",
+    "manifest.json": "a5afe851298d15e75c776f2881a88457"
+  },
+  "changes": []
+}
