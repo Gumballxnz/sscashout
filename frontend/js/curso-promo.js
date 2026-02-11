@@ -120,13 +120,9 @@
     trackEvent('curso_popup_dismissed');
   }
 
-  // Rastrear eventos (opcional - pode integrar com analytics)
+  // Rastrear eventos (log para debug)
   function trackEvent(eventName) {
     console.log('[CursoPromo]', eventName);
-    // Se tiver Facebook Pixel
-    if (typeof fbq === 'function') {
-      fbq('trackCustom', eventName);
-    }
   }
 
   // Observar novos sinais

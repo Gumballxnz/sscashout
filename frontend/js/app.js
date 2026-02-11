@@ -613,7 +613,6 @@
           }
 
           if (typeof toast === 'function') toast("Acesso Desbloqueado!");
-          if (typeof fbq === 'function') fbq('track', 'Lead');
 
           enviarLeadParaGoogle(nome, whatsapp);
 

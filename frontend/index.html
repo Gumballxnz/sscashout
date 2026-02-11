@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Sistema de Cashout</title>
 
-  <meta name="theme-color" content="#0B0F14">
+  <meta name="color-scheme" content="dark">
   <link rel="manifest" href="/manifest.json?v=4">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
@@ -47,28 +47,10 @@
   <script src="js/protect.min.js"></script>
   <script src="js/curso-promo.js" defer=""></script>
 
-
   <!-- UX helpers (toasts/ações) -->
   <script src="js/ux.js" defer=""></script>
-  <!-- Meta Pixel Code -->
-  <script>
-    !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return; n = f.fbq = function () {
-        n.callMethod ?
-          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-      };
-      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-      n.queue = []; t = b.createElement(e); t.async = !0;
-      t.src = v; s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s)
-    }(window, document, 'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '336965031445587');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=336965031445587&ev=PageView&noscript=1" /></noscript>
-  <!-- End Meta Pixel Code -->
+
+
 
 </head>
 
@@ -77,7 +59,7 @@
   <div id="toast-stack" class="toast-stack"></div>
 
   <!-- In-app Browser Warning -->
-  <div id="inAppWarn" class="inapp-warn" style="display:none">
+  <div id="inAppWarn" class="inapp-warn hidden">
     <button class="inapp-close" id="inAppClose" aria-label="Fechar">×</button>
 
     <div class="inapp-row">
@@ -97,7 +79,7 @@
     </div>
   </div>
 
-  <div id="inAppGuide" class="inapp-guide" role="dialog" aria-modal="true" style="display:none">
+  <div id="inAppGuide" class="inapp-guide hidden" role="dialog" aria-modal="true">
     <div class="inapp-card">
       <p class="inapp-h">Como abrir no navegador</p>
       <p class="inapp-p" id="inAppStepsText"></p>
@@ -172,8 +154,7 @@
     <!-- Top App Bar -->
     <header class="appbar">
       <div class="brand">
-        <img class="logo" src="images/icon-192.png" alt="Logo" draggable="false"
-          style="user-drag: none; -webkit-user-drag: none; pointer-events: none;">
+        <img class="logo" src="images/icon-192.png" alt="Logo" draggable="false">
         <div class="titles">
           <h1>Sistema Cashout</h1>
           <span class="subtitle" data-subtitle="connection">Conectando …</span>
@@ -241,8 +222,7 @@
 
       <!-- Card Entrada -->
 
-      <div id="banner-estrategia"
-        style="display:none; background: #1a1f26; border-left: 4px solid #f1c40f; padding: 12px; border-radius: 8px; margin-bottom: 10px; color: #fff; font-size: 14px; font-weight: 600;">
+      <div id="banner-estrategia" class="banner-estrategia hidden">
         <span id="texto-meta"> Analisando padrões...</span>
       </div>
 
@@ -258,11 +238,11 @@
         <div class="entry-grid">
           <div class="entry-metric">
             <div class="label">VITÓRIAS</div>
-            <div class="value" style="color: var(--live);" id="count-wins">0</div>
+            <div class="value text-live" id="count-wins">0</div>
           </div>
           <div class="entry-metric">
             <div class="label">DERROTAS</div>
-            <div class="value" style="color: var(--danger);" id="count-loss">0</div>
+            <div class="value text-danger" id="count-loss">0</div>
           </div>
           <div class="entry-metric">
             <div class="label">TOTAL</div>
@@ -270,15 +250,13 @@
           </div>
         </div>
 
-        <div style="margin-top: 15px; background: var(--stroke); height: 6px; border-radius: 10px; overflow: hidden;">
-          <div id="stat-percent-bar"
-            style="width: 0%; height: 100%; background: var(--primary); transition: width 0.8s ease;"></div>
+        <div class="stat-bar-container">
+          <div id="stat-percent-bar" class="stat-bar-fill"></div>
         </div>
 
         <div class="actions">
-          <a href="https://media1.placard.co.mz/redirect.aspx?pid-2422&bid=1514" target="_blank" class="btn btn-primary"
-            id="openGame"
-            style="text-decoration: none; display: flex; align-items: center; justify-content: center;">Apostar</a>
+          <a href="https://media1.placard.co.mz/redirect.aspx?pid-2422&bid=1514" target="_blank"
+            rel="noopener noreferrer" class="btn btn-primary btn-apostar" id="openGame">Apostar</a>
           <button class="btn btn-warn" data-action="ativar-push" id="pushbtn">Ativar Alerta</button>
         </div>
 
@@ -334,7 +312,6 @@
 
       <!-- ========== BANNER DO CURSO - SISTEMA MILIONÁRIO ========== -->
       <!--
-
   <section class="card">
   <div class="curso-banner">
     <div class="curso-banner-content">
@@ -363,7 +340,6 @@
     </div>
   </div>
 </section>
-
 -->
       <!-- ========== /BANNER DO CURSO ========== -->
 
@@ -433,8 +409,8 @@
           </div>
         </div>
 
-        <a href="https://media1.placard.co.mz/redirect.aspx?pid-2422&bid=1514" target="_blank" id="conversion-cta-btn"
-          class="conversion-btn">
+        <a href="https://media1.placard.co.mz/redirect.aspx?pid-2422&bid=1514" target="_blank" rel="noopener noreferrer"
+          id="conversion-cta-btn" class="conversion-btn">
           CRIAR CONTA E TESTAR AGORA
         </a>
 
