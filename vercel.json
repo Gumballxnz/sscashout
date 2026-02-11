@@ -3,5 +3,6 @@
     "public": true,
     "cleanUrls": true,
     "trailingSlash": false,
+    "buildCommand": null,
     "outputDirectory": "frontend"
 }
