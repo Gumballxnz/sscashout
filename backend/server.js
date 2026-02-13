@@ -35,7 +35,9 @@ let clients = [];
 let velasHistorico = [];
 let stats = { wins: 0, loss: 0, total: 0, percentage: 0 };
 let ultimoHistorico = null;
+let ultimoResultado = null;
 let onlineCount = 0;
+let notificationClicks = [];
 
 // --- Push Subscriptions ---
 let pushService = null;
@@ -281,6 +283,182 @@ app.post('/api/subscribe', (req, res) => {
         res.json({ ok: true });
     } else {
         res.status(400).json({ ok: false, error: 'Subscrição inválida' });
+    }
+});
+
+// =============================================================================
+// 4b. NOVOS ENDPOINTS — Paridade com API original
+// =============================================================================
+
+// POST /api/sinal — Recebe sinal (para bot próprio ou teste)
+app.post('/api/sinal', (req, res) => {
+    const { tipo = 'entrada_confirmada', apos_de, cashout, max_gales = 2, vela_atual, meta, id, ts } = req.body;
+
+    if (apos_de === undefined || cashout === undefined) {
+        return res.status(422).json({
+            detail: [{ loc: ['body'], msg: 'apos_de e cashout são obrigatórios', type: 'value_error' }]
+        });
+    }
+
+    const sinal = {
+        tipo,
+        apos_de: Number(apos_de),
+        cashout: Number(cashout),
+        max_gales: Number(max_gales),
+        vela_atual: vela_atual != null ? Number(vela_atual) : null,
+        meta: meta || null,
+        id: id || `sinal-${Date.now()}`,
+        ts: ts || new Date().toISOString()
+    };
+
+    console.log(`[API] 📊 Sinal recebido: ${sinal.tipo} | Após: ${sinal.apos_de}x → Cash: ${sinal.cashout}x`);
+
+    // Broadcast to all SSE clients
+    broadcast('sinal', sinal);
+
+    // Push notification
+    if (pushService && sinal.tipo === 'entrada_confirmada') {
+        pushService.notifySignal(sinal).catch(() => { });
+    }
+
+    res.json({ ok: true, sinal });
+});
+
+// POST /api/resultado — Recebe resultado (para bot próprio ou teste)
+app.post('/api/resultado', (req, res) => {
+    const { id, status, vela_final, ts } = req.body;
+
+    if (!id || !status) {
+        return res.status(422).json({
+            detail: [{ loc: ['body'], msg: 'id e status são obrigatórios', type: 'value_error' }]
+        });
+    }
+
+    const resultado = {
+        id,
+        status,
+        vela_final: vela_final != null ? Number(vela_final) : null,
+        ts: ts || new Date().toISOString()
+    };
+
+    ultimoHistorico = resultado;
+    ultimoResultado = resultado;
+
+    console.log(`[API] ${status === 'green' ? '✅' : '❌'} Resultado: ${status.toUpperCase()} | Vela: ${vela_final}x`);
+
+    // Broadcast to all SSE clients
+    broadcast('resultado', resultado);
+
+    // Update stats
+    if (status === 'green') {
+        stats.wins++;
+    } else {
+        stats.loss++;
+    }
+    stats.total = stats.wins + stats.loss;
+    stats.percentage = stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0;
+
+    // Push notification
+    if (pushService) {
+        if (status === 'green') {
+            pushService.notifyGreen(resultado).catch(() => { });
+        } else {
+            pushService.notifyLoss(resultado).catch(() => { });
+        }
+    }
+
+    // Refresh stats from original after 2s
+    setTimeout(refreshStats, 2000);
+
+    res.json({ ok: true, resultado });
+});
+
+// POST /api/velas — Recebe velas (para bot próprio)
+app.post('/api/velas', (req, res) => {
+    const data = req.body;
+    const vals = data.valores || data.velas || (Array.isArray(data) ? data : null);
+
+    if (vals && vals.length > 0) {
+        velasHistorico = vals;
+        broadcast('vela', { valores: velasHistorico });
+        console.log(`[API] 🕯️ Velas atualizadas: ${vals.length} valores`);
+    }
+
+    res.json({ ok: true, count: velasHistorico.length });
+});
+
+// GET /api/ultimo-resultado — Retorna último resultado
+app.get('/api/ultimo-resultado', (req, res) => {
+    if (ultimoResultado) {
+        res.json({ ok: true, data: ultimoResultado });
+    } else if (ultimoHistorico) {
+        res.json({ ok: true, data: ultimoHistorico });
+    } else {
+        res.json({ ok: false });
+    }
+});
+
+// POST /api/notification/click — Registra clique em push
+app.post('/api/notification/click', (req, res) => {
+    if (pushService) pushService.recordClick();
+    notificationClicks.push({ ts: new Date().toISOString(), data: req.body });
+    // Keep only last 200 clicks
+    if (notificationClicks.length > 200) notificationClicks = notificationClicks.slice(-200);
+    res.json({ ok: true });
+});
+
+// POST /api/push-broadcast — Push manual para todos
+app.post('/api/push-broadcast', async (req, res) => {
+    if (!pushService) return res.status(503).json({ ok: false, error: 'Push service indisponível' });
+
+    const {
+        title = '📢 Aviso',
+        body = 'Nova atualização disponível!',
+        kind = 'admin',
+        tag, url = '/', priority = 5,
+        mode = 'queue', target = 'all',
+        limit = 0, query,
+        delay_seconds = 0, dry_run = false,
+        renotify = true, require_interaction = false, silent = false
+    } = req.body || {};
+
+    try {
+        const result = await pushService.sendTargeted(
+            {
+                title, body,
+                icon: '/images/icon-192.png',
+                badge: '/favicon.ico',
+                tag: tag || kind,
+                data: { url, kind }
+            },
+            { target, limit, query, priority, delay_seconds, dry_run, mode, tag, renotify, require_interaction, silent }
+        );
+        res.json({ ok: true, ...result });
+    } catch (e) {
+        console.error('[Push] Erro no broadcast:', e.message);
+        res.status(500).json({ ok: false, error: e.message });
+    }
+});
+
+// POST /api/subs/reset — Reset de assinantes
+app.post('/api/subs/reset', (req, res) => {
+    if (!pushService) return res.status(503).json({ ok: false, error: 'Push service indisponível' });
+    const result = pushService.resetSubscriptions();
+    res.json({ ok: true, ...result });
+});
+
+// POST /api/test/push-resultado — Testa push de resultado
+app.post('/api/test/push-resultado', async (req, res) => {
+    if (!pushService) return res.status(503).json({ ok: false, error: 'Push service indisponível' });
+
+    try {
+        await pushService.notifyGreen({
+            vela_final: 3.50,
+            cashout: 2.00
+        });
+        res.json({ ok: true, msg: 'Push de teste enviado (GREEN simulado)' });
+    } catch (e) {
+        res.status(500).json({ ok: false, error: e.message });
     }
 });
 
