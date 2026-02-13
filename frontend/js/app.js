@@ -1049,16 +1049,74 @@
     } catch { }
   });
 
+  // Polling fallback when SSE is unavailable (e.g., Vercel proxy)
+  let pollingInterval = null;
+  const POLL_INTERVAL_MS = 5000;
+  const SSE_FAIL_THRESHOLD = 3;
+
+  async function pollData() {
+    try {
+      const [statsRes, velasRes, onlineRes] = await Promise.allSettled([
+        fetch(API_BASE + "/api/stats", { cache: "no-store" }),
+        fetch(API_BASE + "/api/velas", { cache: "no-store" }),
+        fetch(API_BASE + "/api/online", { cache: "no-store" })
+      ]);
+
+      if (statsRes.status === "fulfilled" && statsRes.value.ok) {
+        const d = await statsRes.value.json();
+        const winsEl = document.getElementById("count-wins");
+        const lossEl = document.getElementById("count-loss");
+        const totalEl = document.getElementById("count-total");
+        const percentText = document.getElementById("stat-percent-text");
+        const bar = document.getElementById("stat-percent-bar");
+        if (winsEl) winsEl.textContent = d.wins;
+        if (lossEl) lossEl.textContent = d.loss;
+        if (totalEl) totalEl.textContent = d.total;
+        if (percentText) percentText.textContent = `${d.percentage}% DE ACERTOS`;
+        if (bar) bar.style.width = `${d.percentage}%`;
+        setStatus(true);
+      }
+
+      if (velasRes.status === "fulfilled" && velasRes.value.ok) {
+        const jV = await velasRes.value.json();
+        const arr = jV.valores || jV.velas || [];
+        if (arr.length) renderVelas(arr.slice(0, 5));
+      }
+
+      if (onlineRes.status === "fulfilled" && onlineRes.value.ok) {
+        const jO = await onlineRes.value.json();
+        const el = document.getElementById("onlineCount");
+        if (el && jO.online != null) el.textContent = `· ${jO.online} online`;
+      }
+    } catch (e) {
+      console.warn("[Poll] Erro:", e);
+    }
+  }
+
+  function startPolling() {
+    if (pollingInterval) return;
+    console.log("[Fallback] SSE indisponível, usando polling a cada 5s");
+    pollingInterval = setInterval(pollData, POLL_INTERVAL_MS);
+    pollData();
+  }
+
+  function stopPolling() {
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+      pollingInterval = null;
+    }
+  }
+
   function connectSSE() {
     try { es && es.close(); } catch (_) { }
     const cid = getClientId();
-    // URL do Backend AWS (HTTP - Cuidado com Mixed Content)
     const API_BASE = "";
     es = new EventSource(API_BASE + "/api/stream?cid=" + encodeURIComponent(cid) + "&v=" + Date.now());
 
     es.onopen = () => {
       setStatus(true);
       reconnectAttempts = 0;
+      stopPolling();
       resetHeartbeat();
       if (!ultimasVelas.length) setAnalyzing(true);
     };
@@ -1082,8 +1140,16 @@
     es.onerror = () => {
       setStatus(false);
       try { es && es.close(); } catch (_) { }
-      const backoff = Math.min(1000 * Math.pow(2, reconnectAttempts++), MAX_BACKOFF);
-      setTimeout(connectSSE, backoff);
+      reconnectAttempts++;
+
+      if (reconnectAttempts >= SSE_FAIL_THRESHOLD) {
+        startPolling();
+        const retrySSE = Math.min(30000, 10000 * reconnectAttempts);
+        setTimeout(connectSSE, retrySSE);
+      } else {
+        const backoff = Math.min(1000 * Math.pow(2, reconnectAttempts), MAX_BACKOFF);
+        setTimeout(connectSSE, backoff);
+      }
     };
   }
 
