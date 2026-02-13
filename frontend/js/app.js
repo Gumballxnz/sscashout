@@ -3,7 +3,7 @@
   window.__cashoutInit = true;
 
   // --- Helpers Base ---
-  const API_BASE = "http://51.20.9.165:3000";
+  const API_BASE = "";
   const $ = (sel) => document.querySelector(sel);
   const setText = (sel, val) => { const el = $(sel); if (el) el.textContent = val; };
   const asNum = (v) => {
@@ -1053,7 +1053,7 @@
     try { es && es.close(); } catch (_) { }
     const cid = getClientId();
     // URL do Backend AWS (HTTP - Cuidado com Mixed Content)
-    const API_BASE = "http://51.20.9.165:3000";
+    const API_BASE = "";
     es = new EventSource(API_BASE + "/api/stream?cid=" + encodeURIComponent(cid) + "&v=" + Date.now());
 
     es.onopen = () => {
