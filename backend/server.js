@@ -23,11 +23,10 @@ app.use(express.static(__dirname));
 
 // =============================================================================
 // BACKEND MIRROR — Espelha dados REAIS do site original em tempo real
-// Conecta ao SSE do original e repassa tudo para nossos clientes.
-// Zero dados falsos. Zero geração local.
+// Conecta ao SSE do original (com autenticação via token) e repassa aos clientes
 // =============================================================================
 
-const ORIGINAL_DOMAIN = 'https://app.sscashout.online';
+const ORIGINAL_DOMAIN = 'http://69.62.126.212:8000';
 const STREAM_URL = `${ORIGINAL_DOMAIN}/api/stream`;
 
 // --- Estado do Servidor (Cache do Original) ---
@@ -43,44 +42,97 @@ let notificationClicks = [];
 let pushService = null;
 try { pushService = require('./push-service'); } catch (e) { }
 
+// --- Token Management ---
+let currentToken = null;
+let tokenRenewInterval = null;
+let mirrorConnection = null;
+let reconnectAttempts = 0;
+const MAX_BACKOFF = 30000;
+
+// Obtém token de autenticação do servidor original
+async function getAuthToken() {
+    try {
+        const res = await fetch(`${ORIGINAL_DOMAIN}/api/token`, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache'
+            },
+            timeout: 10000
+        });
+        if (!res.ok) {
+            console.error(`[Token] ❌ HTTP ${res.status}`);
+            return null;
+        }
+        const data = await res.json();
+        currentToken = data.token;
+        const ttl = data.ttl || 300;
+        console.log(`[Token] ✅ Token obtido (TTL: ${ttl}s): ${currentToken.slice(0, 8)}...`);
+        return currentToken;
+    } catch (e) {
+        console.error(`[Token] ❌ Falha ao obter: ${e.message}`);
+        return null;
+    }
+}
+
+// Renova o token periodicamente (a cada 4 min, antes do TTL de 5 min)
+function startTokenRenewal() {
+    if (tokenRenewInterval) clearInterval(tokenRenewInterval);
+    tokenRenewInterval = setInterval(async () => {
+        const oldToken = currentToken;
+        const newToken = await getAuthToken();
+        if (newToken && newToken !== oldToken) {
+            console.log('[Token] 🔄 Token renovado, reconectando SSE...');
+            connectToMirrorStream();
+        }
+    }, 240 * 1000); // 4 minutos
+}
+
 // =============================================================================
-// 1. SINCRONIZAÇÃO INICIAL — Busca dados actuais do original
+// 1. SINCRONIZAÇÃO INICIAL — Puxa dados atuais do original (COM TOKEN)
 // =============================================================================
 
-async function syncInitialData() {
+async function initialSync() {
+    // Garante token antes de começar
+    if (!currentToken) await getAuthToken();
+    if (!currentToken) {
+        console.error('[Sync] ❌ Falha crítica: impossível obter token para sync inicial.');
+        return;
+    }
+
     const endpoints = [
         {
-            name: 'Stats',
-            url: `${ORIGINAL_DOMAIN}/api/stats`,
+            name: 'stats',
+            url: `${ORIGINAL_DOMAIN}/api/stats?_token=${encodeURIComponent(currentToken)}`,
             handler: (data) => {
-                stats = data;
-                console.log(`[Sync] ✅ Stats: ${data.wins}W/${data.loss}L (${data.percentage}%)`);
-            }
-        },
-        {
-            name: 'Velas',
-            url: `${ORIGINAL_DOMAIN}/api/velas`,
-            handler: (data) => {
-                velasHistorico = data.valores || data.velas || [];
-                console.log(`[Sync] ✅ Velas: [${velasHistorico.slice(0, 6).map(v => Number(v).toFixed(2)).join(', ')}]`);
-            }
-        },
-        {
-            name: 'Histórico',
-            url: `${ORIGINAL_DOMAIN}/api/ultimo-historico`,
-            handler: (data) => {
-                if (data.ok && data.data) {
-                    ultimoHistorico = data.data;
-                    console.log(`[Sync] ✅ Último resultado: ${data.data.status} (${data.data.vela_final}x)`);
+                if (data.wins !== undefined) {
+                    stats = {
+                        wins: data.wins || 0,
+                        loss: data.loss || 0,
+                        total: data.total || 0,
+                        percentage: data.percentage || 0
+                    };
+                    console.log(`[Sync] ✅ Stats: ${stats.wins}W/${stats.loss}L (${stats.percentage}%)`);
                 }
             }
         },
         {
-            name: 'Online',
-            url: `${ORIGINAL_DOMAIN}/api/online`,
+            name: 'velas',
+            url: `${ORIGINAL_DOMAIN}/api/velas?_token=${encodeURIComponent(currentToken)}`,
             handler: (data) => {
-                if (data.ok) {
-                    onlineCount = data.online || 0;
+                const v = data.valores || data.velas || [];
+                if (v.length > 0) {
+                    velasHistorico = v;
+                    console.log(`[Sync] ✅ Velas: ${velasHistorico.length} valores`);
+                }
+            }
+        },
+        {
+            name: 'online',
+            url: `${ORIGINAL_DOMAIN}/api/online?_token=${encodeURIComponent(currentToken)}`,
+            handler: (data) => {
+                if (data.ok || data.online !== undefined) {
+                    onlineCount = data.online || data.count || 0;
                     console.log(`[Sync] ✅ Online: ${onlineCount}`);
                 }
             }
@@ -94,7 +146,8 @@ async function syncInitialData() {
             const res = await fetch(ep.url, {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Referer': ORIGINAL_DOMAIN
+                    'Accept': 'application/json',
+                    'Cache-Control': 'no-cache'
                 },
                 timeout: 10000
             });
@@ -113,45 +166,51 @@ async function syncInitialData() {
 }
 
 // =============================================================================
-// 2. CONEXÃO SSE — Espelha stream do original em tempo real
+// 2. CONEXÃO SSE — Espelha stream com autenticação via token
 // =============================================================================
 
-let mirrorConnection = null;
-let reconnectAttempts = 0;
-const MAX_BACKOFF = 30000; // 30s máximo entre tentativas
-
-function connectToMirrorStream() {
+async function connectToMirrorStream() {
     if (mirrorConnection) {
         try { mirrorConnection.close(); } catch (e) { }
     }
 
-    const cid = 'mirror-' + Date.now();
-    const url = `${STREAM_URL}?cid=${cid}&v=${Date.now()}`;
+    // Obter token se não tiver
+    if (!currentToken) {
+        const token = await getAuthToken();
+        if (!token) {
+            const backoff = Math.min(5000 * Math.pow(2, reconnectAttempts++), MAX_BACKOFF);
+            console.log(`[Mirror] Sem token. Tentando novamente em ${Math.round(backoff / 1000)}s`);
+            setTimeout(connectToMirrorStream, backoff);
+            return;
+        }
+        startTokenRenewal();
+    }
 
-    console.log(`[Mirror] Conectando ao stream real: ${ORIGINAL_DOMAIN}`);
+    const cid = 'mirror-' + Date.now();
+    const url = `${STREAM_URL}?_token=${encodeURIComponent(currentToken)}&cid=${cid}&v=${Date.now()}`;
+
+    console.log(`[Mirror] Conectando ao stream: ${ORIGINAL_DOMAIN} (token: ${currentToken.slice(0, 8)}...)`);
 
     try {
         mirrorConnection = new EventSource(url, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'Referer': ORIGINAL_DOMAIN
+                'Accept': 'text/event-stream',
+                'Cache-Control': 'no-cache'
             }
         });
 
-        // --- Conexão aberta ---
         mirrorConnection.onopen = () => {
             reconnectAttempts = 0;
             console.log('[Mirror] ✅ Conectado ao stream do original!');
         };
 
-        // --- Recebe mensagens do original ---
         mirrorConnection.onmessage = (event) => {
             try {
                 const parsed = JSON.parse(event.data);
                 const evt = parsed.event;
                 const data = parsed.data;
 
-                // Log compacto
                 if (evt === 'vela') {
                     const vals = data.valores || data.velas || [];
                     if (vals.length > 0) {
@@ -160,20 +219,15 @@ function connectToMirrorStream() {
                     }
                 } else if (evt === 'sinal') {
                     console.log(`[Mirror] 📊 Sinal: ${data.tipo || 'desconhecido'} | Após: ${data.apos_de}x → Cash: ${data.cashout}x`);
-
-                    // Notificação push
                     if (pushService && data.tipo === 'entrada_confirmada') {
                         pushService.notifySignal(data).catch(() => { });
                     }
                 } else if (evt === 'resultado') {
                     ultimoHistorico = data;
+                    ultimoResultado = data;
                     const st = (data.status || '').toUpperCase();
                     console.log(`[Mirror] ${st === 'GREEN' ? '✅' : '❌'} ${st} | Vela: ${data.vela_final}x`);
-
-                    // Atualiza stats com polling rápido
                     setTimeout(refreshStats, 1500);
-
-                    // Notificação push
                     if (pushService) {
                         if (data.status === 'green') {
                             pushService.notifyGreen(data).catch(() => { });
@@ -189,7 +243,6 @@ function connectToMirrorStream() {
                     console.log(`[Mirror] 📨 Evento: ${evt}`);
                 }
 
-                // Repassa TUDO para nossos clientes
                 broadcast(parsed.event, parsed.data);
 
             } catch (e) {
@@ -197,35 +250,53 @@ function connectToMirrorStream() {
             }
         };
 
-        // --- Erro / Reconexão ---
         mirrorConnection.onerror = (err) => {
             console.error(`[Mirror] ❌ Erro no stream. Reconectando... (tentativa ${reconnectAttempts + 1})`);
             try { mirrorConnection.close(); } catch (e) { }
 
-            const backoff = Math.min(1000 * Math.pow(2, reconnectAttempts++), MAX_BACKOFF);
+            // Token pode ter expirado — limpa para forçar renovação
+            currentToken = null;
+            const backoff = Math.min(3000 * Math.pow(2, reconnectAttempts++), MAX_BACKOFF);
             console.log(`[Mirror] Próxima tentativa em ${Math.round(backoff / 1000)}s`);
             setTimeout(connectToMirrorStream, backoff);
         };
 
     } catch (e) {
         console.error('[Mirror] Falha ao criar EventSource:', e.message);
-        const backoff = Math.min(1000 * Math.pow(2, reconnectAttempts++), MAX_BACKOFF);
+        currentToken = null;
+        const backoff = Math.min(3000 * Math.pow(2, reconnectAttempts++), MAX_BACKOFF);
         setTimeout(connectToMirrorStream, backoff);
     }
 }
 
-// Atualiza stats silenciosamente
+// Atualiza stats silenciosamente (COM TOKEN)
 async function refreshStats() {
     try {
-        const res = await fetch(`${ORIGINAL_DOMAIN}/api/stats`, {
-            headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': ORIGINAL_DOMAIN },
+        if (!currentToken) await getAuthToken();
+        if (!currentToken) return;
+
+        const res = await fetch(`${ORIGINAL_DOMAIN}/api/stats?_token=${encodeURIComponent(currentToken)}`, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0',
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache'
+            },
             timeout: 8000
         });
         if (res.ok) {
-            stats = await res.json();
+            const data = await res.json();
+            if (data.wins !== undefined) {
+                stats = {
+                    wins: data.wins || 0,
+                    loss: data.loss || 0,
+                    total: data.total || 0,
+                    percentage: data.percentage || 0
+                };
+            }
         }
     } catch (e) { }
 }
+
 
 // =============================================================================
 // 3. BROADCAST — Envia eventos para todos os clientes conectados
@@ -243,7 +314,6 @@ function broadcast(event, data) {
         }
     });
 
-    // Remove clientes mortos
     if (deadClients.length > 0) {
         clients = clients.filter((_, i) => !deadClients.includes(i));
     }
@@ -290,277 +360,164 @@ app.post('/api/subscribe', (req, res) => {
 // 4b. NOVOS ENDPOINTS — Paridade com API original
 // =============================================================================
 
-// POST /api/sinal — Recebe sinal (para bot próprio ou teste)
+// POST /api/sinal
 app.post('/api/sinal', (req, res) => {
     const { tipo = 'entrada_confirmada', apos_de, cashout, max_gales = 2, vela_atual, meta, id, ts } = req.body;
-
     if (apos_de === undefined || cashout === undefined) {
         return res.status(422).json({
             detail: [{ loc: ['body'], msg: 'apos_de e cashout são obrigatórios', type: 'value_error' }]
         });
     }
-
     const sinal = {
-        tipo,
-        apos_de: Number(apos_de),
-        cashout: Number(cashout),
-        max_gales: Number(max_gales),
-        vela_atual: vela_atual != null ? Number(vela_atual) : null,
-        meta: meta || null,
-        id: id || `sinal-${Date.now()}`,
-        ts: ts || new Date().toISOString()
+        tipo, apos_de: Number(apos_de), cashout: Number(cashout), max_gales: Number(max_gales),
+        vela_atual: vela_atual != null ? Number(vela_atual) : null, meta: meta || null,
+        id: id || `sinal-${Date.now()}`, ts: ts || new Date().toISOString()
     };
-
-    console.log(`[API] 📊 Sinal recebido: ${sinal.tipo} | Após: ${sinal.apos_de}x → Cash: ${sinal.cashout}x`);
-
-    // Broadcast to all SSE clients
     broadcast('sinal', sinal);
-
-    // Push notification
-    if (pushService && sinal.tipo === 'entrada_confirmada') {
-        pushService.notifySignal(sinal).catch(() => { });
-    }
-
+    if (pushService && sinal.tipo === 'entrada_confirmada') pushService.notifySignal(sinal).catch(() => { });
     res.json({ ok: true, sinal });
 });
 
-// POST /api/resultado — Recebe resultado (para bot próprio ou teste)
+// POST /api/resultado
 app.post('/api/resultado', (req, res) => {
     const { id, status, vela_final, ts } = req.body;
-
     if (!id || !status) {
         return res.status(422).json({
             detail: [{ loc: ['body'], msg: 'id e status são obrigatórios', type: 'value_error' }]
         });
     }
-
     const resultado = {
-        id,
-        status,
-        vela_final: vela_final != null ? Number(vela_final) : null,
-        ts: ts || new Date().toISOString()
+        id, status, vela_final: vela_final != null ? Number(vela_final) : null, ts: ts || new Date().toISOString()
     };
-
     ultimoHistorico = resultado;
     ultimoResultado = resultado;
-
-    console.log(`[API] ${status === 'green' ? '✅' : '❌'} Resultado: ${status.toUpperCase()} | Vela: ${vela_final}x`);
-
-    // Broadcast to all SSE clients
     broadcast('resultado', resultado);
-
-    // Update stats
-    if (status === 'green') {
-        stats.wins++;
-    } else {
-        stats.loss++;
-    }
+    if (status === 'green') { stats.wins++; } else { stats.loss++; }
     stats.total = stats.wins + stats.loss;
     stats.percentage = stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0;
-
-    // Push notification
     if (pushService) {
-        if (status === 'green') {
-            pushService.notifyGreen(resultado).catch(() => { });
-        } else {
-            pushService.notifyLoss(resultado).catch(() => { });
-        }
+        if (status === 'green') pushService.notifyGreen(resultado).catch(() => { });
+        else pushService.notifyLoss(resultado).catch(() => { });
     }
-
-    // Refresh stats from original after 2s
     setTimeout(refreshStats, 2000);
-
     res.json({ ok: true, resultado });
 });
 
-// POST /api/velas — Recebe velas (para bot próprio)
+// POST /api/velas
 app.post('/api/velas', (req, res) => {
     const data = req.body;
     const vals = data.valores || data.velas || (Array.isArray(data) ? data : null);
-
     if (vals && vals.length > 0) {
         velasHistorico = vals;
         broadcast('vela', { valores: velasHistorico });
-        console.log(`[API] 🕯️ Velas atualizadas: ${vals.length} valores`);
     }
-
     res.json({ ok: true, count: velasHistorico.length });
 });
 
-// GET /api/ultimo-resultado — Retorna último resultado
+// GET /api/ultimo-resultado
 app.get('/api/ultimo-resultado', (req, res) => {
-    if (ultimoResultado) {
-        res.json({ ok: true, data: ultimoResultado });
-    } else if (ultimoHistorico) {
-        res.json({ ok: true, data: ultimoHistorico });
-    } else {
-        res.json({ ok: false });
-    }
+    if (ultimoResultado) res.json({ ok: true, data: ultimoResultado });
+    else if (ultimoHistorico) res.json({ ok: true, data: ultimoHistorico });
+    else res.json({ ok: false });
 });
 
-// POST /api/notification/click — Registra clique em push
+// POST /api/notification/click
 app.post('/api/notification/click', (req, res) => {
     if (pushService) pushService.recordClick();
     notificationClicks.push({ ts: new Date().toISOString(), data: req.body });
-    // Keep only last 200 clicks
     if (notificationClicks.length > 200) notificationClicks = notificationClicks.slice(-200);
     res.json({ ok: true });
 });
 
-// POST /api/push-broadcast — Push manual para todos
+// POST /api/push-broadcast
 app.post('/api/push-broadcast', async (req, res) => {
     if (!pushService) return res.status(503).json({ ok: false, error: 'Push service indisponível' });
-
-    const {
-        title = '📢 Aviso',
-        body = 'Nova atualização disponível!',
-        kind = 'admin',
-        tag, url = '/', priority = 5,
-        mode = 'queue', target = 'all',
-        limit = 0, query,
-        delay_seconds = 0, dry_run = false,
-        renotify = true, require_interaction = false, silent = false
-    } = req.body || {};
-
+    const { title = '📢 Aviso', body = 'Nova atualização disponível!', kind = 'admin', tag, url = '/', priority = 5, mode = 'queue', target = 'all', limit = 0, query, delay_seconds = 0, dry_run = false, renotify = true, require_interaction = false, silent = false } = req.body || {};
     try {
-        const result = await pushService.sendTargeted(
-            {
-                title, body,
-                icon: '/images/icon-192.png',
-                badge: '/favicon.ico',
-                tag: tag || kind,
-                data: { url, kind }
-            },
-            { target, limit, query, priority, delay_seconds, dry_run, mode, tag, renotify, require_interaction, silent }
-        );
+        const result = await pushService.sendTargeted({ title, body, icon: '/images/icon-192.png', badge: '/favicon.ico', tag: tag || kind, data: { url, kind } }, { target, limit, query, priority, delay_seconds, dry_run, mode, tag, renotify, require_interaction, silent });
         res.json({ ok: true, ...result });
     } catch (e) {
-        console.error('[Push] Erro no broadcast:', e.message);
         res.status(500).json({ ok: false, error: e.message });
     }
 });
 
-// POST /api/subs/reset — Reset de assinantes
+// POST /api/subs/reset
 app.post('/api/subs/reset', (req, res) => {
     if (!pushService) return res.status(503).json({ ok: false, error: 'Push service indisponível' });
-    const result = pushService.resetSubscriptions();
-    res.json({ ok: true, ...result });
+    res.json({ ok: true, ...pushService.resetSubscriptions() });
 });
 
-// POST /api/test/push-resultado — Testa push de resultado
+// POST /api/test/push-resultado
 app.post('/api/test/push-resultado', async (req, res) => {
     if (!pushService) return res.status(503).json({ ok: false, error: 'Push service indisponível' });
-
     try {
-        await pushService.notifyGreen({
-            vela_final: 3.50,
-            cashout: 2.00
-        });
+        await pushService.notifyGreen({ vela_final: 3.50, cashout: 2.00 });
         res.json({ ok: true, msg: 'Push de teste enviado (GREEN simulado)' });
     } catch (e) {
         res.status(500).json({ ok: false, error: e.message });
     }
 });
 
-// SSE Stream — Nosso endpoint que o frontend conecta
+// SSE Stream
 app.get('/api/stream', (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.flushHeaders();
-
     const clientId = Date.now() + '-' + Math.random().toString(36).slice(2, 8);
     const newClient = { id: clientId, res };
     clients.push(newClient);
-
     console.log(`[SSE] ➕ Cliente ${clientId} | Total: ${clients.length}`);
-
-    // Envia estado actual ao novo cliente
     res.write(`data: ${JSON.stringify({ event: 'connected', data: { status: 'online' } })}\n\n`);
-
-    if (velasHistorico.length > 0) {
-        res.write(`data: ${JSON.stringify({ event: 'vela', data: { valores: velasHistorico } })}\n\n`);
-    }
-
+    if (velasHistorico.length > 0) res.write(`data: ${JSON.stringify({ event: 'vela', data: { valores: velasHistorico } })}\n\n`);
     res.write(`data: ${JSON.stringify({ event: 'online', data: { count: onlineCount || 8 } })}\n\n`);
-
-    // Keepalive a cada 15s
-    const keepalive = setInterval(() => {
-        try { res.write(`:keepalive\n\n`); } catch (e) { clearInterval(keepalive); }
-    }, 15000);
-
-    req.on('close', () => {
-        clearInterval(keepalive);
-        clients = clients.filter(c => c.id !== clientId);
-        console.log(`[SSE] ➖ Cliente ${clientId} | Total: ${clients.length}`);
-    });
+    const keepalive = setInterval(() => { try { res.write(`:keepalive\n\n`); } catch (e) { clearInterval(keepalive); } }, 15000);
+    req.on('close', () => { clearInterval(keepalive); clients = clients.filter(c => c.id !== clientId); console.log(`[SSE] ➖ Cliente ${clientId} | Total: ${clients.length}`); });
 });
 
-// =============================================================================
-// 5. HEALTH CHECK — Para monitoramento
-// =============================================================================
-
+// HEALTH CHECK
 app.get('/api/health', (req, res) => {
     res.json({
-        ok: true,
-        uptime: process.uptime(),
-        clients: clients.length,
+        ok: true, uptime: process.uptime(), clients: clients.length,
         mirrorConnected: mirrorConnection && mirrorConnection.readyState === 1,
-        stats,
-        velasCount: velasHistorico.length,
+        tokenActive: !!currentToken, stats, velasCount: velasHistorico.length,
         lastUpdate: ultimoHistorico?.ts || null
     });
 });
 
-// =============================================================================
-// 6. INICIALIZAÇÃO
-// =============================================================================
-
+// INICIALIZAÇÃO
 async function initServer() {
-    console.log('');
-    console.log('╔══════════════════════════════════════════════════╗');
-    console.log('║   🪞 SISTEMA CASHOUT — Backend Mirror 24h       ║');
-    console.log('║   Dados REAIS do original em tempo real          ║');
-    console.log('║   Zero dados falsos                              ║');
-    console.log('╚══════════════════════════════════════════════════╝');
-    console.log('');
+    console.log('\n╔══════════════════════════════════════════════════╗\n║   🪞 SISTEMA CASHOUT — Backend Mirror v2         ║\n║   Dados REAIS com autenticação via token         ║\n╚══════════════════════════════════════════════════╝\n');
     console.log(`[Boot] Fonte: ${ORIGINAL_DOMAIN}`);
 
-    // 1. Sincroniza dados iniciais
-    await syncInitialData();
-
-    // 2. Conecta ao stream SSE do original
+    await initialSync();
     connectToMirrorStream();
 
-    // 3. Polling de backup a cada 2 minutos
     setInterval(async () => {
         await refreshStats();
-        // Sync velas se o SSE falhou
         if (velasHistorico.length === 0) {
             try {
-                const r = await fetch(`${ORIGINAL_DOMAIN}/api/velas`, {
-                    headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': ORIGINAL_DOMAIN }
-                });
-                if (r.ok) {
-                    const d = await r.json();
-                    velasHistorico = d.valores || d.velas || velasHistorico;
+                if (!currentToken) await getAuthToken();
+                if (currentToken) {
+                    const r = await fetch(`${ORIGINAL_DOMAIN}/api/velas?_token=${encodeURIComponent(currentToken)}`, {
+                        headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' }
+                    });
+                    if (r.ok) {
+                        const d = await r.json();
+                        velasHistorico = d.valores || d.velas || velasHistorico;
+                    }
                 }
             } catch (e) { }
         }
     }, 120000);
 
-    // 4. Inicia servidor HTTP
     app.listen(PORT, () => {
         console.log(`\n🚀 Servidor Mirror rodando em http://localhost:${PORT}`);
         console.log(`📡 Espelhando: ${ORIGINAL_DOMAIN}`);
+        console.log(`🔑 Autenticação: Token auto-renovável (4 min)`);
         console.log(`🔄 Polling backup: a cada 2 min`);
-        console.log(`💓 Health check: http://localhost:${PORT}/api/health`);
-        console.log('');
     });
 }
 
-initServer().catch(e => {
-    console.error('❌ ERRO FATAL ao iniciar servidor:', e);
-    process.exit(1);
-});
+initServer().catch(e => { console.error('❌ ERRO FATAL:', e); process.exit(1); });
