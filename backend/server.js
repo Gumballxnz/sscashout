@@ -269,7 +269,7 @@ async function connectToMirrorStream() {
     }
 }
 
-// Atualiza stats silenciosamente (COM TOKEN)
+// Atualiza stats silenciosamente (COM TOKEN + RETRY)
 async function refreshStats() {
     try {
         if (!currentToken) await getAuthToken();
@@ -283,6 +283,33 @@ async function refreshStats() {
             },
             timeout: 8000
         });
+
+        if (res.status === 401 || res.status === 403) {
+            console.log('[Sync] Token expirado (401/403). Renovando...');
+            currentToken = null;
+            await getAuthToken();
+
+            if (currentToken) {
+                // Retry once
+                const retry = await fetch(`${ORIGINAL_DOMAIN}/api/stats?_token=${encodeURIComponent(currentToken)}`, {
+                    headers: { 'User-Agent': 'Mozilla/5.0' },
+                    timeout: 8000
+                });
+                if (retry.ok) {
+                    const data = await retry.json();
+                    if (data.wins !== undefined) {
+                        stats = {
+                            wins: data.wins || 0,
+                            loss: data.loss || 0,
+                            total: data.total || 0,
+                            percentage: data.percentage || 0
+                        };
+                    }
+                }
+            }
+            return;
+        }
+
         if (res.ok) {
             const data = await res.json();
             if (data.wins !== undefined) {
@@ -294,7 +321,9 @@ async function refreshStats() {
                 };
             }
         }
-    } catch (e) { }
+    } catch (e) {
+        console.error('[Sync] Falha ao atualizar stats:', e.message);
+    }
 }
 
 

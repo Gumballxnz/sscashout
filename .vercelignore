@@ -1,7 +1,7 @@
-backend
-tools
-sscashout
-.git
-.github
-.vscode
-test
+.agent/
+.git/
+node_modules/
+keys/
+*.pem
+*.log
+backend/
