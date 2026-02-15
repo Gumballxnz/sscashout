@@ -8,7 +8,7 @@
   const setText = (sel, val) => { const el = $(sel); if (el) el.textContent = val; };
   const asNum = (v) => {
     if (v === null || v === undefined) return null;
-    const s = String(v).trim();
+    const s = String(v).replace(",", ".").trim();
     return (!s || s === "-") ? null : Number(s);
   };
   const fmtX = (n) => (n === null ? "-" : `${Number(n).toFixed(2)}x`);
@@ -1436,7 +1436,12 @@
       const jHist = await resHist.json();
       if (jHist?.ok && jHist.data) {
         const d = jHist.data;
-        const toNum = (v) => (v === null || v === undefined || v === "" ? null : Number(v));
+        const toNum = (v) => {
+          if (v === null || v === undefined || v === "") return null;
+          const s = String(v).replace(",", ".").trim();
+          const n = Number(s);
+          return Number.isFinite(n) ? n : null;
+        };
         addHistoricoLinha({
           ts: d.ts,
           status: d.status,
