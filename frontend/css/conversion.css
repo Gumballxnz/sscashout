@@ -1,14 +1,14 @@
-/* Conversion Popup Styles - Premium Dark/Green Theme */
+/* Conversion Popup Styles - Precise Match */
 .conversion-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  /* Darker overlay */
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.92);
+  /* Very dark overlay */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -16,7 +16,7 @@
   padding: 16px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .conversion-overlay[aria-hidden="false"] {
@@ -25,197 +25,197 @@
 }
 
 .conversion-card {
-  background: #0d1117;
-  /* Deep dark bg */
+  background: #0f1115;
+  /* Dark/Black bg */
   width: 100%;
-  max-width: 380px;
-  /* Slightly wider */
-  border-radius: 20px;
+  max-width: 350px;
+  /* Tighter width */
+  border-radius: 24px;
+  /* Very rounded corners */
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-  border: 2px solid #fbbf24;
-  /* Distinct Yellow Border */
-  transform: translateY(30px) scale(0.95);
-  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  border: 3px solid #facc15;
+  /* Strong Yellow Border (3px) */
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   font-family: 'Inter', system-ui, sans-serif;
 }
 
 .conversion-overlay[aria-hidden="false"] .conversion-card {
-  transform: translateY(0) scale(1);
+  transform: scale(1);
 }
 
 .conversion-header {
-  background: #00c853;
-  /* Vibrant Green (Malachite) */
-  padding: 24px 20px;
+  background: #10b981;
+  /* Emerald Green */
+  padding: 28px 20px;
   text-align: center;
   position: relative;
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .rocket-icon {
-  font-size: 36px;
+  font-size: 40px;
   margin-bottom: 12px;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
-  animation: rocket-float 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+  animation: rocket-pulse 2s infinite ease-in-out;
   display: inline-block;
 }
 
-@keyframes rocket-float {
+@keyframes rocket-pulse {
 
   0%,
   100% {
-    transform: translateY(0) rotate(0deg);
+    transform: scale(1) rotate(0deg);
   }
 
   50% {
-    transform: translateY(-6px) rotate(5deg);
+    transform: scale(1.1) rotate(5deg);
   }
 }
 
 .conversion-header h3 {
   margin: 0;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.3;
   text-transform: uppercase;
   letter-spacing: -0.5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .close-btn {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(255, 255, 255, 0.25);
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s;
   backdrop-filter: blur(4px);
 }
 
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.4);
-  transform: rotate(90deg);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .conversion-body {
-  padding: 24px 24px 32px;
+  padding: 24px 20px 32px;
   text-align: center;
 }
 
 .conversion-intro {
   color: #d1d5db;
-  font-size: 15px;
-  margin-bottom: 28px;
+  font-size: 14px;
+  margin-bottom: 24px;
   line-height: 1.5;
   font-weight: 500;
+  padding: 0 10px;
 }
 
 .conversion-steps {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 28px;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
 .step-item {
-  background: #161b22;
-  border-radius: 12px;
-  padding: 14px;
+  background: #18181b;
+  border-radius: 14px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   text-align: left;
-  border: 1px solid #30363d;
-  transition: transform 0.2s, border-color 0.2s;
+  border: 1px solid #27272a;
+  transition: border-color 0.2s;
 }
 
 .step-item:hover {
-  transform: translateX(4px);
-  border-color: #fbbf24;
+  border-color: #facc15;
 }
 
 .step-icon {
-  width: 44px;
-  height: 44px;
-  background: #fbbf24;
+  width: 42px;
+  height: 42px;
+  background: #facc15;
   /* Yellow accent */
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   flex-shrink: 0;
   color: #1a1f26;
-  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
+  box-shadow: 0 2px 6px rgba(250, 204, 21, 0.4);
 }
 
 .step-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  flex: 1;
 }
 
 .step-info strong {
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 3px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .step-info span {
   color: #9ca3af;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .conversion-btn {
   display: block;
   width: 100%;
-  padding: 18px;
-  background: linear-gradient(135deg, #00c853, #009624);
-  /* Gradient Green */
+  padding: 16px;
+  background: linear-gradient(to bottom, #10b981, #059669);
+  /* Emerald Gradient */
   color: white;
   font-weight: 800;
   text-transform: uppercase;
-  border-radius: 14px;
+  border-radius: 12px;
   text-decoration: none;
-  font-size: 16px;
-  box-shadow: 0 8px 20px rgba(0, 200, 83, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  font-size: 15px;
+  box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
   letter-spacing: 0.5px;
   border: none;
   cursor: pointer;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .conversion-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(0, 200, 83, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  filter: brightness(1.1);
+  box-shadow: 0 12px 20px -4px rgba(16, 185, 129, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .conversion-btn:active {
   transform: translateY(1px);
-  box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3);
+  box-shadow: 0 4px 8px -2px rgba(16, 185, 129, 0.4);
 }
 
 .conversion-skip {
   background: none;
   border: none;
   color: #6b7280;
-  font-size: 13px;
-  margin-top: 18px;
+  font-size: 12px;
+  margin-top: 16px;
   cursor: pointer;
   text-decoration: underline;
   padding: 8px;

@@ -1051,8 +1051,8 @@
       addHistoricoLinha({
         ts: d.ts || new Date().toISOString(),
         status: st,
-        apos_de: lastSignal?.apos_de ?? null,
-        cashout: lastSignal?.cashout ?? null,
+        apos_de: apos ?? lastSignal?.apos_de ?? null,
+        cashout: cash ?? lastSignal?.cashout ?? null,
         vela_final: vf,
       });
 
