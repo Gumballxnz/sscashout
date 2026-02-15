@@ -479,6 +479,29 @@
     while (stack.children.length > 4) stack.removeChild(stack.firstElementChild);
   }
 
+  function makePatternToast(text) {
+    const stack = document.getElementById("toast-stack");
+    if (!stack) return;
+
+    const el = document.createElement("div");
+    el.className = "toast pattern";
+    el.style.cssText = "border-left: 4px solid #f1c40f; background: #18181b; color: #fff;";
+    el.innerHTML = `
+      <div class="row">
+        <div class="title" style="color:#f1c40f;font-weight:700;">⚠️ Padrão Detectado!</div>
+      </div>
+      <div class="msg" style="margin-top:4px;">${text}</div>
+    `;
+    stack.appendChild(el);
+
+    setTimeout(() => {
+      el.classList.add("out");
+      el.addEventListener("animationend", () => el.remove(), { once: true });
+    }, 10000);
+
+    while (stack.children.length > 4) stack.removeChild(stack.firstElementChild);
+  }
+
   function spawnGreenSocialToasts({ vf, cashout }) {
     // aleatório: 1 a 3 toasts por vitória
     const qtd = randInt(1, 3);
@@ -927,7 +950,10 @@
       }
 
       // ✅ Se NÃO confirmou: é só aviso visual. NÃO mexe em card nem lastSignal
-      if (!confirmado) return;
+      if (!confirmado) {
+        if (formando && metaMsg) makePatternToast(metaMsg);
+        return;
+      }
 
       if (bannerEl) bannerEl.style.display = "none";
 
@@ -974,7 +1000,7 @@
       const cash = asNum(d.cashout);
 
       // NOVO: Dispara evento customizado para o popup de conversão
-      if (status === "green") {
+      if (st === "green") {
         window.dispatchEvent(new CustomEvent('sse-resultado', {
           detail: { status: 'green', data: d }
         }));
@@ -1570,7 +1596,7 @@
   // ==================== LÓGICA DO POPUP DE CONVERSÃO ====================
   (function () {
     const STORAGE_KEY = 'conversion_popup_count';
-    const MAX_SHOWS = 3; // Aumentei para 3
+    const MAX_SHOWS = 10; // Aumentei para 10
     const DELAY_AFTER_GREEN = 8000; // 8 segundos (logo após a comemoração)
 
     let greenDetected = false;

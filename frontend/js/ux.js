@@ -26,7 +26,7 @@ document.getElementById("nav-push")?.addEventListener("click", () => {
 });
 
 // Link fixo do jogo (sem precisar configurar manualmente)
-const GAME_URL = "https://media1.placard.co.mz/redirect.aspx?pid-2422&bid=1514";
+const GAME_URL = "https://media1.placard.co.mz/redirect.aspx?pid=3699&bid=1690";
 
 document.getElementById("openGame")?.addEventListener("click", () => {
   window.open(GAME_URL, "_blank", "noopener");

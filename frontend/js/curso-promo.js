@@ -8,7 +8,7 @@
 
   // Configurações
   const CONFIG = {
-    whatsappLink: 'https://wa.me/258869422557?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20curso%20Sistema%20Milion%C3%A1rio',
+    whatsappLink: 'https://wa.me/258877188415?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20curso%20Sistema%20Milion%C3%A1rio',
     signalTrigger: 2, // Após 2 sinais (sem timer)
     storageKey: 'curso_popup_shown',
     storageDismissKey: 'curso_popup_dismissed',
