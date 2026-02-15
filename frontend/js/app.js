@@ -787,8 +787,8 @@
       li.innerHTML = `
         <div class="time">${hora}</div>
         <div class="meta">
-          <span class="chip">Apos: ${fmtX2(apos_de)}</span>
-          <span class="chip">Cash: ${fmtX2(cashout)}</span>
+          ${apos_de ? `<span class="chip">Apos: ${fmtX2(apos_de)}</span>` : ""}
+          ${cashout ? `<span class="chip">Cash: ${fmtX2(cashout)}</span>` : ""}
           <span class="chip">Vela: ${fmtX2(vela_final)}</span>
         </div>
         <div class="badge pill ${statusClass}">${statusText}</div>
@@ -802,8 +802,8 @@
       tr.setAttribute("data-status", (status || "").toLowerCase());
       tr.innerHTML = `
         <td>${hora}</td>
-        <td>${fmtX2(apos_de)}</td>
-        <td>${fmtX2(cashout)}</td>
+        <td>${apos_de ? fmtX2(apos_de) : ""}</td>
+        <td>${cashout ? fmtX2(cashout) : ""}</td>
         <td class="${statusClass}">${statusText}</td>
         <td>${fmtX2(vela_final)}</td>
         <td></td>
@@ -951,7 +951,7 @@
 
       // ✅ Se NÃO confirmou: é só aviso visual. NÃO mexe em card nem lastSignal
       if (!confirmado) {
-        if (formando && metaMsg) makePatternToast(metaMsg);
+        // Banner já exibido pela lógica acima (if bannerEl && metaMsg...)
         return;
       }
 

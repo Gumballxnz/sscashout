@@ -2693,3 +2693,57 @@ textarea,
   -webkit-user-select: text;
   user-select: text;
 }
+/* Banner Padrão Detectado (Yellow Border) */
+.banner-estrategia {
+  background: #181920;
+  border-left: 4px solid #ffd700;
+  color: #fff;
+  padding: 12px 16px;
+  margin-bottom: 16px; 
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  display: flex; /* Flex to align content */
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* When visible via Inline Style (display:block) or Class */
+.banner-estrategia[style*="display: block"] {
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+  padding: 12px 16px; /* Restore padding */
+  margin-bottom: 16px;
+}
+/* Banner Estrategia (Pattern Detected) */
+.banner-estrategia {
+    background: #181920;
+    border-left: 4px solid #ffd700;
+    color: #fff;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.banner-estrategia[style*="display: block"] {
+    display: flex !important;
+}
+
+#texto-meta {
+    color: #e2e8f0;
+}
